@@ -5,7 +5,7 @@ import ButonnAdd from './ButtonAdd';
 class Body extends React.Component {
   render() {
     return (
-      <div className="balance group">
+      <div className="balance-group">
         <Balance />
         <ButonnAdd />
       </div>
