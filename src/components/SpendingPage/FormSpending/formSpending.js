@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import Loading from '../../LoadingComponent/Loading';
+import CurrencyInput from 'react-currency-masked-input';
 
 import './index.css';
 
@@ -25,8 +26,8 @@ class FormSpending extends React.Component {
     });
   }
 
-  changePrice(event) {
-    this.setState({ price: Number(event.target.value) });
+  changePrice(event, masked) {
+    this.setState({ price: masked });
   }
 
   formSubmit(event) {
@@ -69,7 +70,7 @@ class FormSpending extends React.Component {
             value={this.state.date}
             onChange={this.changeDate}
           />
-          <input
+          <CurrencyInput
             type="number"
             step={0.01}
             min={0}
