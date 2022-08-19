@@ -1,11 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './index.css';
 class Reports extends React.Component {
   render() {
     return (
-      <a href="#" className="reports">
+      <Link to="/reports" className="reports">
         Reports
-      </a>
+      </Link>
     );
   }
 }

@@ -2,17 +2,17 @@ import React from 'react';
 import ButtonReturn from '../../ButtonReturn/ButtonReturnComponent';
 import './index.css';
 
-class NavBarSpendign extends React.Component {
+class NavBarReporting extends React.Component {
   render() {
     return (
       <div className="Nav-bar">
         <div className="container">
           <ButtonReturn />
-          <h2>new Buy</h2>
+          <h2>Reports</h2>
         </div>
       </div>
     );
   }
 }
 
-export default NavBarSpendign;
+export default NavBarReporting;

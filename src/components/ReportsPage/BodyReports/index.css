@@ -1,0 +1,19 @@
+.conteiner {
+}
+
+.conteudo {
+  width: 50%;
+}
+
+.table-spendings {
+  text-align: left;
+}
+
+th,
+td {
+  padding: 8px 12px;
+}
+
+th {
+  border-bottom: 1px solid #ccc;
+}

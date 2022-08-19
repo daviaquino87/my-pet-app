@@ -1,12 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './index.css';
 
 class ButonnAdd extends React.Component {
   render() {
     return (
-      <a href="/spendings">
+      <Link to="/spendings">
         <button className="button-add">+</button>
-      </a>
+      </Link>
     );
   }
 }
