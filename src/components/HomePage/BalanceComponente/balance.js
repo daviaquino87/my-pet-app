@@ -30,7 +30,12 @@ class Balance extends React.Component {
     return (
       <div style={{ height: 80 }}>
         {this.state.balance != null ? (
-          <h1>R$ {this.state.balance}</h1>
+          <h1>
+            {new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            }).format(this.state.balance)}
+          </h1>
         ) : (
           <Loading />
         )}
