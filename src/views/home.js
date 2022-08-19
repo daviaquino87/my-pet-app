@@ -1,6 +1,6 @@
 import React from 'react';
-import Body from '../components/BodyComponent/Body';
-import NavBar from '../components/NavbarComponent/NavBar';
+import Body from '../components/HomePage/BodyComponent/Body';
+import NavBar from '../components/HomePage/NavbarComponent/NavBar';
 
 class HomePage extends React.Component {
   render() {

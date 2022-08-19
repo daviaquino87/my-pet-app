@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './index.css';
 import HomePage from './views/home';
+import SpendingPage from './views/spending';
 
 class Render extends React.Component {
   render() {
@@ -10,6 +11,7 @@ class Render extends React.Component {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/spendings" element={<SpendingPage />} />
         </Routes>
       </BrowserRouter>
     );
