@@ -1,5 +1,6 @@
 import React from 'react';
-import Reports from './Repots';
+import './index.css'
+import Reports from '../ReportComponent/Repots';
 
 class NavBar extends React.Component {
   render() {

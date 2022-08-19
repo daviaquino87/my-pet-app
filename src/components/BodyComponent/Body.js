@@ -1,11 +1,12 @@
 import React from 'react';
-import Balance from './balance';
-import ButonnAdd from './ButtonAdd';
+import './index.css';
+import Balance from '../BalanceComponente/balance';
+import ButonnAdd from '../ButtonComponent/ButtonAdd';
 
 class Body extends React.Component {
   render() {
     return (
-      <div className="balance-group">
+      <div className="balance-group" >
         <Balance />
         <ButonnAdd />
       </div>

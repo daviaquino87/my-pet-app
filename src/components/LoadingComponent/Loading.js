@@ -1,4 +1,5 @@
 import React from 'react';
+import './index.css'
 
 class Loading extends React.Component {
   render() {

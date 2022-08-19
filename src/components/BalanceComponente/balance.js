@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react';
-import Loading from './Loading';
+import './index.css';
+import Loading from '../LoadingComponent/Loading';
 
 class Balance extends React.Component {
   state = {

@@ -1,0 +1,20 @@
+.button-add {
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    height: 50px;
+    width: 50px;
+    border-radius: 40px;
+    border-style: none;
+    background-color: #f19b26;
+    color: black;
+    font-size: 35px;
+    cursor: pointer;
+    box-shadow: 0 12px 15px 2px #f19b2640;
+  }
+  
+  button:active {
+    background-color: #d4891f;
+  }
