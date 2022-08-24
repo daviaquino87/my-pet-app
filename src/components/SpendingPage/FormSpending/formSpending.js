@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { api } from '../../../services/api';
 import React from 'react';
 import Loading from '../../LoadingComponent/Loading';
 import CurrencyInput from 'react-currency-masked-input';
@@ -42,8 +42,8 @@ class FormSpending extends React.Component {
       price: this.state.price,
     };
 
-    axios
-      .post('https://my-project-pet.herokuapp.com/spending', data)
+    api
+      .post('/spending', data)
       .then((result) => {
         this.setState({
           loading: false,
