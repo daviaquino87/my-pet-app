@@ -21,6 +21,37 @@ a:visited {
   color: #0000ff;
 }
 
+.my-pet-input {
+  padding: 10px 15px;
+  border-radius: 4px;
+  border: 2px solid #ccc;
+  font-size: 16px;
+}
+
+.my-pet-button {
+  background-color: #f19b26;
+  box-shadow: 0 12px 15px 2px #f19b2640;
+  color: black;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  transition: background 300ms ease;
+  border-radius: 14px;
+  align-items: center;
+  justify-content: center;
+  border-style: none;
+  padding: 15px;
+}
+
+.my-pet-button:focus {
+  background-color: #cc8520;
+}
+
+.my-pet-input:focus {
+  border-color: #cc8520;
+  outline: none;
+}
+
 .jc-center {
   justify-content: center;
 }

@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React from 'react';
-import './index.css';
+import { api } from '../../../services/api';
 import Loading from '../../LoadingComponent/Loading';
+import './index.css';
 
 class Balance extends React.Component {
   state = {
@@ -9,8 +9,8 @@ class Balance extends React.Component {
   };
 
   componentDidMount() {
-    axios
-      .get('https://my-project-pet.herokuapp.com/balance')
+    api
+      .get('/balance')
       .then((result) => {
         const balance = result.data;
         this.setState({

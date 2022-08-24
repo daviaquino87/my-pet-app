@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { api } from '../../../services/api';
 import React from 'react';
 import Loading from '../../LoadingComponent/Loading';
 import './index.css';
@@ -19,8 +19,8 @@ class BodyReports extends React.Component {
   }
 
   getSpendings() {
-    axios
-      .get('https://my-project-pet.herokuapp.com/reports')
+    api
+      .get('/reports')
       .then((result) => {
         const spendings = result.data;
         this.setState({
@@ -34,8 +34,8 @@ class BodyReports extends React.Component {
   }
 
   ondelete(id) {
-    axios
-      .delete(`https://my-project-pet.herokuapp.com/spending/${id}`)
+    api
+      .delete(`/spending/${id}`)
       .then((result) => {
         const remove = window.confirm('Deseja remover esse item ?');
 

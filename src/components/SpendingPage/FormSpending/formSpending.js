@@ -4,6 +4,7 @@ import Loading from '../../LoadingComponent/Loading';
 import CurrencyInput from 'react-currency-masked-input';
 
 import './index.css';
+import Button from '../../Button';
 
 class FormSpending extends React.Component {
   constructor() {
@@ -62,10 +63,11 @@ class FormSpending extends React.Component {
   render() {
     return (
       <div className="Box">
-        <form className="form" onSubmit={this.formSubmit}>
+        <form className="form form-spending " onSubmit={this.formSubmit}>
           <input
             type="date"
             name="date"
+            className="my-pet-input"
             placeholder="Date,defaut today"
             value={this.state.date}
             onChange={this.changeDate}
@@ -75,14 +77,18 @@ class FormSpending extends React.Component {
             step={0.01}
             min={0}
             name="price"
+            className="my-pet-input"
             placeholder="Price your buy"
             value={this.state.price}
             onChange={this.changePrice}
           />
           <div className="flex ai-center div-button column ">
-            <button type="submit" className="save" disabled={!this.state.price}>
-              Save
-            </button>
+            <Button
+              label="Save"
+              className="save"
+              type="submit"
+              disabled={!this.state.price}
+            />
             {this.state.loading ? <Loading /> : null}
           </div>
         </form>
