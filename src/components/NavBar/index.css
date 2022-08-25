@@ -1,0 +1,37 @@
+.nav-bar-group {
+  margin-top: 30px;
+}
+
+.button-component {
+  background-color: orange;
+}
+
+.group-nav {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex {
+  display: flex;
+}
+
+.Nav-bar-title {
+  margin: 0;
+}
+
+.logo-shadow {
+  position: absolute;
+  z-index: -1;
+  top: 10px;
+  left: 0;
+  filter: blur(15px);
+}
+
+.image_group {
+  position: relative;
+}
+
+.group-nav-itens {
+  gap: 50px;
+}

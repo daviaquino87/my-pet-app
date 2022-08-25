@@ -1,6 +1,17 @@
 .login-group-register {
-  margin-top: 70px;
+  /* margin-top: 70px; */
   padding: 20px 30px;
   border-radius: 12px;
   box-shadow: 0 0 9px 0 rgba(3, 3, 3, 0.199);
+}
+
+.button-retorno:active {
+  color: #0000ff;
+}
+
+.curioso {
+  width: 120px;
+  margin-top: 70px;
+  margin-bottom: -15px;
+  z-index: 1;
 }

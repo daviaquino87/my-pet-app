@@ -1,8 +1,12 @@
 .balance-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 50px;
-    gap: 90px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 90px;
+}
+
+.Reports {
+  font-size: 18px;
+}

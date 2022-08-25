@@ -44,24 +44,24 @@ class Body extends React.Component {
     axios
       .post(`${process.env.REACT_APP_BASE_URL}/autenticate`, data)
       .then((result) => {
-        alert('deu bom');
+        alert('Bem vindo!');
         localStorage.setItem('token', result.data.token);
         window.top.location.replace('/home');
       })
       .catch((err) => {
-        alert('Deu ruim....');
+        alert('Login invalido.');
         console.log(err);
       });
   }
 
   render() {
     return (
-      <div className="container flex column ai-center jc-center">
+      <div className="container-login flex column ai-center jc-center">
         <div className="image_group">
           <img src="/images/logo.png" alt="logo" className="logo" />
           <img src="/images/logo.png" alt="logo" className="logo-shadow" />
         </div>
-        <div className="login-group-login">
+        <div className="login-group">
           <form onSubmit={this.formSubmit}>
             <input
               type="email"

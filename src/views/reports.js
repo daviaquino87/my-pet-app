@@ -1,12 +1,11 @@
 import React from 'react';
 import BodyReports from '../components/ReportsPage/BodyReports/BodyReportsComponent';
-import NavBarReporting from '../components/ReportsPage/NavBar/NavComponentent';
-
+import NavBar from '../components/NavBar/index';
 class ReportsPage extends React.Component {
   render() {
     return (
       <div>
-        <NavBarReporting />
+        <NavBar title="Reports" canBack />
         <BodyReports />
       </div>
     );

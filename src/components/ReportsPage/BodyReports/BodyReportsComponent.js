@@ -34,19 +34,17 @@ class BodyReports extends React.Component {
   }
 
   ondelete(id) {
-    api
-      .delete(`/spending/${id}`)
-      .then((result) => {
-        const remove = window.confirm('Deseja remover esse item ?');
-
-        if (remove) {
-          this.getSpendings();
-        }
-      })
-      .catch((err) => {
-        alert('err: falha ao deletar ');
-        console.log(err);
-      });
+    const remove = window.confirm('Deseja remover esse item ?');
+    if (remove) {
+      this.getSpendings();
+      api
+        .delete(`/spending/${id}`)
+        .then((result) => {})
+        .catch((err) => {
+          alert('err: falha ao deletar ');
+          console.log(err);
+        });
+    }
   }
 
   componentDidMount() {

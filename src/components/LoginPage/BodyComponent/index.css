@@ -1,4 +1,12 @@
-.login-group-login {
+.container-login {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.login-group {
   margin-top: 70px;
   padding: 20px 30px;
   border-radius: 12px;

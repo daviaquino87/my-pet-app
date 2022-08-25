@@ -1,12 +1,12 @@
 import React from 'react';
 import BodySpendign from '../components/SpendingPage/BodySpending/bodySpendingComponent';
-import NavBarSpendign from '../components/SpendingPage/NavBar/NavComponentent';
+import NavBar from '../components/NavBar/index';
 
 class SpendingPage extends React.Component {
   render() {
     return (
       <div>
-        <NavBarSpendign />
+        <NavBar title="Buy" canBack />
         <BodySpendign />
       </div>
     );

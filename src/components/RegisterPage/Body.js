@@ -43,11 +43,12 @@ class Body extends React.Component {
     axios
       .post(`${process.env.REACT_APP_BASE_URL}/register`, data)
       .then((result) => {
-        alert('deu bom');
+        alert('Por favor, realize login.');
         window.top.location.replace('/');
       })
       .catch((err) => {
-        alert('Deu ruim....');
+        alert('ops..algo deu errado!');
+        console.log(err.response.data);
         console.log(err);
       });
   }
@@ -55,7 +56,7 @@ class Body extends React.Component {
   render() {
     return (
       <div className="container flex column ai-center jc-center">
-        {/* logo */}
+        <img className="curioso" src="/images/curioso.png" />
         <div className="login-group-register">
           <form onSubmit={this.formSubmit}>
             <input
@@ -75,6 +76,7 @@ class Body extends React.Component {
             <Button label="Save" type="submit" className="login" />
           </form>
           <a
+            className="button-retorno"
             href="#back"
             onClick={(event) => {
               event.preventDefault();
