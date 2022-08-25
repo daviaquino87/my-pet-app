@@ -5,7 +5,7 @@ import './index.css';
 class NavBarReporting extends React.Component {
   render() {
     return (
-      <div className="Nav-bar">
+      <div className="Nav-bar report">
         <div className="container">
           <ButtonReturn />
           <h2>Reports</h2>

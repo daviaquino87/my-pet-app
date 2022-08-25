@@ -1,12 +1,13 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import AuthUser from './components/Auth';
 import './index.css';
 import HomePage from './views/home';
-import ReportsPage from './views/reports';
-import SpendingPage from './views/spending';
 import LoginPage from './views/login';
 import RegisterPage from './views/register';
+import ReportsPage from './views/reports';
+import SpendingPage from './views/spending';
 
 class Render extends React.Component {
   render() {
@@ -15,9 +16,15 @@ class Render extends React.Component {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/spendings" element={<SpendingPage />} />
-          <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/home" element={<AuthUser>{<HomePage />}</AuthUser>} />
+          <Route
+            path="/spendings"
+            element={<AuthUser>{<SpendingPage />}</AuthUser>}
+          />
+          <Route
+            path="/reports"
+            element={<AuthUser>{<ReportsPage />}</AuthUser>}
+          />
         </Routes>
       </BrowserRouter>
     );

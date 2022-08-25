@@ -25,7 +25,7 @@ class Body extends React.Component {
 
   changePassword(event) {
     this.setState({
-      email: event.target.value,
+      password: event.target.value,
     });
   }
 
@@ -41,9 +41,10 @@ class Body extends React.Component {
     };
 
     axios
-      .post('https://my-project-pet.herokuapp.com/autentication', data)
+      .post(`${process.env.REACT_APP_BASE_URL}/register`, data)
       .then((result) => {
         alert('deu bom');
+        window.top.location.replace('/');
       })
       .catch((err) => {
         alert('Deu ruim....');
@@ -53,17 +54,10 @@ class Body extends React.Component {
 
   render() {
     return (
-      <div className="container flex al-center js-center">
+      <div className="container flex column ai-center jc-center">
         {/* logo */}
-        <div className="login-group">
+        <div className="login-group-register">
           <form onSubmit={this.formSubmit}>
-            <input
-              type="text"
-              name="name"
-              placeholder="price your name"
-              className="my-pet-input"
-              onChange={this.changeEmail}
-            />
             <input
               type="email"
               name="email"
@@ -80,6 +74,15 @@ class Body extends React.Component {
             />
             <Button label="Save" type="submit" className="login" />
           </form>
+          <a
+            href="#back"
+            onClick={(event) => {
+              event.preventDefault();
+              window.history.back();
+            }}
+          >
+            back to login
+          </a>
         </div>
       </div>
     );

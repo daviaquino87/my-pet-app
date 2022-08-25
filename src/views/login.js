@@ -3,11 +3,7 @@ import Body from '../components/LoginPage/BodyComponent/Body';
 
 class LoginPage extends React.Component {
   render() {
-    return (
-      <div>
-        <Body />
-      </div>
-    );
+    return <Body />;
   }
 }
 

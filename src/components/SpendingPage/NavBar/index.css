@@ -7,7 +7,7 @@
   margin-bottom: 30px;
 }
 
-.container {
+.Nav-bar .container {
   margin: 20px;
   display: flex;
   flex-direction: row;

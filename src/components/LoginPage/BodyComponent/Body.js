@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Button from '../../Button';
 import './index.css';
 
@@ -41,7 +42,7 @@ class Body extends React.Component {
     };
 
     axios
-      .post('https://my-project-pet.herokuapp.com/autenticate', data)
+      .post(`${process.env.REACT_APP_BASE_URL}/autenticate`, data)
       .then((result) => {
         alert('deu bom');
         localStorage.setItem('token', result.data.token);
@@ -55,12 +56,12 @@ class Body extends React.Component {
 
   render() {
     return (
-      <div className="container flex al-center js-center">
+      <div className="container flex column ai-center jc-center">
         <div className="image_group">
           <img src="/images/logo.png" alt="logo" className="logo" />
           <img src="/images/logo.png" alt="logo" className="logo-shadow" />
         </div>
-        <div className="login-group">
+        <div className="login-group-login">
           <form onSubmit={this.formSubmit}>
             <input
               type="email"
@@ -80,7 +81,7 @@ class Body extends React.Component {
             />
             <Button label="login" type="submit" className="login" />
           </form>
-          <a href="/home">Don't have a registration? register</a>
+          <Link to="/register">Don't have a registration? register</Link>
         </div>
       </div>
     );
