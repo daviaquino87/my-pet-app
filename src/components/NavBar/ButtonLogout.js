@@ -16,7 +16,7 @@ function ButtonLogout() {
   }
 
   return (
-    <button className="button-component" onClick={logout}>
+    <button className="button-component logout" onClick={logout}>
       Logout
     </button>
   );

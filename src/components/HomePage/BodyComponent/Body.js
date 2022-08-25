@@ -9,7 +9,9 @@ class Body extends React.Component {
     return (
       <div className="balance-group">
         <Link to="/reports">
-          <a className="Reports">Reports</a>
+          <a href="#reports" className="Reports">
+            Reports
+          </a>
         </Link>
         <Balance />
         <ButonnAdd />

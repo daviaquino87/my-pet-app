@@ -2,10 +2,6 @@
   margin-top: 30px;
 }
 
-.button-component {
-  background-color: orange;
-}
-
 .group-nav {
   width: 50%;
   display: flex;
@@ -34,4 +30,12 @@
 
 .group-nav-itens {
   gap: 50px;
+}
+
+.logout {
+  background-color: #f19b26;
+  box-shadow: 0 12px 15px 2px #f19b2640;
+  height: 40px;
+  width: 90px;
+  border-radius: 14px;
 }
