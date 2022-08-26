@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import Button from '../../Button';
 import './index.css';
@@ -44,12 +45,14 @@ class Body extends React.Component {
     axios
       .post(`${process.env.REACT_APP_BASE_URL}/autenticate`, data)
       .then((result) => {
-        alert('Bem vindo!');
+        toast.success('Bem vindo!');
         localStorage.setItem('token', result.data.token);
-        window.top.location.replace('/home');
+        setTimeout(() => {
+          window.top.location.replace('/home');
+        }, 600);
       })
       .catch((err) => {
-        alert('Login invalido.');
+        toast.error('Login invalido!');
         console.log(err);
       });
   }
@@ -57,6 +60,7 @@ class Body extends React.Component {
   render() {
     return (
       <div className="container-login flex column ai-center jc-center">
+        <Toaster position="top-center" reverseOrder={false} />
         <div className="image_group">
           <img src="/images/logo.png" alt="logo" className="logo" />
           <img src="/images/logo.png" alt="logo" className="logo-shadow" />
