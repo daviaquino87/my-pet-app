@@ -39,7 +39,9 @@ class BodyReports extends React.Component {
       this.getSpendings();
       api
         .delete(`/spending/${id}`)
-        .then((result) => {})
+        .then((result) => {
+          window.top.location.replace('/reports');
+        })
         .catch((err) => {
           alert('err: falha ao deletar ');
           console.log(err);

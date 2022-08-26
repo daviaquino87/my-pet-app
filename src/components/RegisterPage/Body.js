@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import Button from '../../components/Button';
+import toast, { Toaster } from 'react-hot-toast';
 import './index.css';
 
 class Body extends React.Component {
@@ -43,11 +44,16 @@ class Body extends React.Component {
     axios
       .post(`${process.env.REACT_APP_BASE_URL}/register`, data)
       .then((result) => {
-        alert('Por favor, realize login.');
+        toast.success('everything worked! please login');
         window.top.location.replace('/');
       })
       .catch((err) => {
-        alert('ops..algo deu errado!');
+        toast.error('Something went wrong...');
+        setTimeout(() => {
+          toast('obs: your password must contain more than 6 characters', {
+            icon: '⚠️',
+          });
+        }, 1000);
         console.log(err.response.data);
         console.log(err);
       });
@@ -56,6 +62,7 @@ class Body extends React.Component {
   render() {
     return (
       <div className="container flex column ai-center jc-center">
+        <Toaster position="top-center" reverseOrder={false} />
         <img className="curioso" src="/images/curioso.png" />
         <div className="login-group-register">
           <form onSubmit={this.formSubmit}>

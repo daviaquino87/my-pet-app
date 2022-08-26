@@ -45,14 +45,14 @@ class Body extends React.Component {
     axios
       .post(`${process.env.REACT_APP_BASE_URL}/autenticate`, data)
       .then((result) => {
-        toast.success('Bem vindo!');
+        toast.success('Welcome!');
         localStorage.setItem('token', result.data.token);
         setTimeout(() => {
           window.top.location.replace('/home');
         }, 600);
       })
       .catch((err) => {
-        toast.error('Login invalido!');
+        toast.error('invalid login!');
         console.log(err);
       });
   }
