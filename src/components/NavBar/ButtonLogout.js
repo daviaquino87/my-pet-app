@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import { api } from '../../services/api';
 
 function ButtonLogout() {
@@ -5,9 +6,13 @@ function ButtonLogout() {
     api
       .post(`${process.env.REACT_APP_BASE_URL}/logout`)
       .then((result) => {
-        alert('até mais!');
-        localStorage.clear();
-        window.top.location.replace('/');
+        toast('See you later!', {
+          icon: '👏',
+        });
+        setTimeout(() => {
+          localStorage.clear();
+          window.top.location.replace('/');
+        }, 900);
       })
       .catch((err) => {
         alert('algo deu errado');
