@@ -33,9 +33,15 @@
 }
 
 .logout {
-  background-color: #f19b26;
-  box-shadow: 0 12px 15px 2px #f19b2640;
+  font-weight: 100px;
+  background-color: #e7b56f93;
   height: 40px;
   width: 90px;
   border-radius: 14px;
+}
+
+.group-logout {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
 }

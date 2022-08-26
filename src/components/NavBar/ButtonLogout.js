@@ -16,9 +16,12 @@ function ButtonLogout() {
   }
 
   return (
-    <button className="button-component logout" onClick={logout}>
-      Logout
-    </button>
+    <div className="group-logout">
+      <button className="button-component logout" onClick={logout}>
+        Logout
+      </button>
+      <img src="/images/Vector.png" />
+    </div>
   );
 }
 
