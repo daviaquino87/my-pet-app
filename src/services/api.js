@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
@@ -6,7 +6,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    config.headers['Authorization'] = localStorage.getItem('token');
+    config.headers["Authorization"] = localStorage.getItem("token");
     return config;
   },
   function (error) {
@@ -21,7 +21,7 @@ api.interceptors.response.use(
   function (error) {
     console.log(error);
     if (error.response.status === 401) {
-      window.top.location.replace('/');
+      window.top.location.replace("/");
     }
     return Promise.reject(error);
   }
