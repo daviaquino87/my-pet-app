@@ -1,13 +1,13 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import AuthUser from './components/Auth';
-import './index.css';
-import HomePage from './views/home';
-import LoginPage from './views/login';
-import RegisterPage from './views/register';
-import ReportsPage from './views/reports';
-import SpendingPage from './views/spending';
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AuthUser from "./components/Auth";
+import "./index.css";
+import LoginPage from "./views/login";
+import RegisterPage from "./views/register";
+import ReportsPage from "./views/reports";
+import SpendingPage from "./views/spending";
+import HomePage from "./views/home";
 
 class Render extends React.Component {
   render() {
@@ -31,7 +31,7 @@ class Render extends React.Component {
   }
 }
 
-const root = document.getElementById('root');
-const rootCreate = createRoot(root);
+const root = document.getElementById("root");
+const rootCreate = createRoot(root as HTMLDivElement);
 
 rootCreate.render(<Render />);

@@ -2,7 +2,7 @@
 //function onClick
 //...classes
 
-function Button({ label, onClick, className = '', ...rest }) {
+function Button({ label, onClick, className = "", ...rest }: any) {
   return (
     <button className={`my-pet-button ${className}`} {...rest}>
       {label}

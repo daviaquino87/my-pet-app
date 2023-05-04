@@ -1,16 +1,16 @@
-import axios from 'axios';
-import React from 'react';
-import Button from '../../components/Button';
-import toast, { Toaster } from 'react-hot-toast';
-import './index.css';
+import axios from "axios";
+import React from "react";
+import Button from "../Button";
+import toast, { Toaster } from "react-hot-toast";
+import "./index.css";
 
 class Body extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     };
 
     this.formSubmit = this.formSubmit.bind(this);
@@ -44,14 +44,14 @@ class Body extends React.Component {
     axios
       .post(`${process.env.REACT_APP_BASE_URL}/register`, data)
       .then((result) => {
-        toast.success('everything worked! please login');
-        window.top.location.replace('/');
+        toast.success("everything worked! please login");
+        window.top.location.replace("/");
       })
       .catch((err) => {
-        toast.error('Something went wrong...');
+        toast.error("Something went wrong...");
         setTimeout(() => {
-          toast('obs: your password must contain more than 6 characters', {
-            icon: '⚠️',
+          toast("obs: your password must contain more than 6 characters", {
+            icon: "⚠️",
           });
         }, 1000);
         console.log(err.response.data);

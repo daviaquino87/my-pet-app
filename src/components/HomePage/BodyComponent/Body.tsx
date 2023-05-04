@@ -1,8 +1,8 @@
-import React from 'react';
-import './index.css';
-import Balance from '../BalanceComponente/balance';
-import ButonnAdd from '../ButtonComponent/ButtonAdd';
-import { Link } from 'react-router-dom';
+import React from "react";
+import "./index.css";
+import { Link } from "react-router-dom";
+import Balance from "../BalanceComponente/balance";
+import ButonnAdd from "../ButtonComponent/ButtonAdd";
 
 class Body extends React.Component {
   render() {

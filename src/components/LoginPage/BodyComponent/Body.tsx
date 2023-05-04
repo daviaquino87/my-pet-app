@@ -1,17 +1,17 @@
-import axios from 'axios';
-import React from 'react';
-import toast, { Toaster } from 'react-hot-toast';
-import { Link } from 'react-router-dom';
-import Button from '../../Button';
-import './index.css';
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+import "./index.css";
+import React from "react";
+import Button from "../../Button";
+import { Link } from "react-router-dom";
 
 class Body extends React.Component {
-  constructor() {
-    super();
+  constructor(props: any) {
+    super(props);
 
     this.state = {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     };
 
     this.formSubmit = this.formSubmit.bind(this);
@@ -19,40 +19,40 @@ class Body extends React.Component {
     this.changePassword = this.changePassword.bind(this);
   }
 
-  changeEmail(event) {
+  changeEmail(event: any) {
     this.setState({
       email: event.target.value,
     });
   }
 
-  changePassword(event) {
+  changePassword(event: any) {
     this.setState({
       password: event.target.value,
     });
   }
 
-  formSubmit(event) {
+  formSubmit(event: any) {
     event.preventDefault();
     this.setState({
       loading: true,
     });
 
     const data = {
-      email: this.state.email,
-      password: this.state.password,
+      email: "alex@gmail.com",
+      password: "124",
     };
 
     axios
       .post(`${process.env.REACT_APP_BASE_URL}/autenticate`, data)
       .then((result) => {
-        toast.success('Welcome!');
-        localStorage.setItem('token', result.data.token);
+        toast.success("Welcome!");
+        localStorage.setItem("token", result.data.token);
         setTimeout(() => {
-          window.top.location.replace('/home');
+          window?.top?.location.replace("/home");
         }, 600);
       })
       .catch((err) => {
-        toast.error('invalid login!');
+        toast.error("invalid login!");
         console.log(err);
       });
   }
@@ -72,14 +72,14 @@ class Body extends React.Component {
               name="email"
               placeholder="price your email"
               className="my-pet-input"
-              value={this.state.email}
+              value={"alex@gmail.com"}
               onChange={this.changeEmail}
             />
             <input
               type="password"
               name="password"
               className="my-pet-input"
-              value={this.state.password}
+              value={"124"}
               placeholder="price your password"
               onChange={this.changePassword}
             />

@@ -6,8 +6,12 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    config.headers["Authorization"] = localStorage.getItem("token");
-    return config;
+    return {
+      ...config,
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    };
   },
   function (error) {
     return Promise.reject(error);
@@ -21,7 +25,7 @@ api.interceptors.response.use(
   function (error) {
     console.log(error);
     if (error.response.status === 401) {
-      window.top.location.replace("/");
+      window?.top?.location.replace("/");
     }
     return Promise.reject(error);
   }

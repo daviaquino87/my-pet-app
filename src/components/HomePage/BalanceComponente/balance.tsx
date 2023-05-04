@@ -1,7 +1,7 @@
-import React from 'react';
-import { api } from '../../../services/api';
-import Loading from '../../LoadingComponent/Loading';
-import './index.css';
+import React from "react";
+import "./index.css";
+import { api } from "../../../services/api";
+import Loading from "../../LoadingComponent/Loading";
 
 class Balance extends React.Component {
   state = {
@@ -10,7 +10,7 @@ class Balance extends React.Component {
 
   componentDidMount() {
     api
-      .get('/balance')
+      .get("/balance")
       .then((result) => {
         const balance = result.data;
         this.setState({
@@ -18,7 +18,7 @@ class Balance extends React.Component {
         });
       })
       .catch((err) => {
-        alert('err: falha no carregamento ');
+        alert("err: falha no carregamento ");
         this.setState({
           balance: 0,
         });
@@ -31,9 +31,9 @@ class Balance extends React.Component {
       <div style={{ height: 80 }}>
         {this.state.balance != null ? (
           <h1>
-            {new Intl.NumberFormat('pt-BR', {
-              style: 'currency',
-              currency: 'BRL',
+            {new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
             }).format(this.state.balance)}
           </h1>
         ) : (
