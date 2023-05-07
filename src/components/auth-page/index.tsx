@@ -14,13 +14,24 @@ import {
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { api } from '../../services/api';
-import { useAuthPageInfo } from './use-auth-page-info';
+import { useAuthPageInfo } from './auth-page-hook';
 import {
   AuthPageFormType,
   IAuthPageProps,
   ILoginForm,
 } from './auth-page.types';
 import { useToast } from '../../hooks/use-toast';
+import { Link } from 'react-router-dom';
+
+const authPageServices = {
+  login: async (data: ILoginForm) => {
+    // return await api.post('/login', data);
+    // TODO: remove this when API is ready
+    return Promise.resolve({
+      token: 'AAA',
+    });
+  },
+};
 
 export function AuthPage({ type }: IAuthPageProps) {
   const {
@@ -36,7 +47,7 @@ export function AuthPage({ type }: IAuthPageProps) {
     },
   });
 
-  const { btnText, headingText } = useAuthPageInfo(type);
+  const { btnText, headingText, isLoginPage } = useAuthPageInfo(type);
 
   const toast = useToast();
 
@@ -48,7 +59,10 @@ export function AuthPage({ type }: IAuthPageProps) {
         email: values.email,
         password: values.password,
       };
-      await api.post('/login', newValues);
+
+      const { token } = await authPageServices.login(newValues);
+
+      toast.success({ title: token });
 
       return;
     }
@@ -139,6 +153,14 @@ export function AuthPage({ type }: IAuthPageProps) {
               >
                 {btnText}
               </Button>
+
+              <Center>
+                {isLoginPage ? (
+                  <Link to="/register">Registrar-se</Link>
+                ) : (
+                  <Link to="/login">Faça login</Link>
+                )}
+              </Center>
             </Flex>
           </CardBody>
         </Card>
