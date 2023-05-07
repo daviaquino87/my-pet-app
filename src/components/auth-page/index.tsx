@@ -19,29 +19,46 @@ import {
   AuthPageFormType,
   IAuthPageProps,
   ILoginForm,
+  IRegisterForm,
 } from './auth-page.types';
 import { useToast } from '../../hooks/use-toast';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import axios from 'axios';
+
+interface ISession {
+  token: string;
+  user: {
+    id: string;
+    name: string;
+  };
+}
+
+interface ILoginResponse extends ISession {}
+
+interface IResponseError {
+  message: string;
+}
 
 const authPageServices = {
-  login: async (data: ILoginForm) => {
-    // return await api.post('/login', data);
-    // TODO: remove this when API is ready
-    return Promise.resolve({
-      token: 'AAA',
-    });
+  login: async (data: ILoginForm): Promise<ILoginResponse> => {
+    const response = await api.post('/session', data);
+    return response.data;
+  },
+  register: async (data: IRegisterForm): Promise<void> => {
+    const response = await api.post('/register', data);
+    return response.data;
   },
 };
 
 export function AuthPage({ type }: IAuthPageProps) {
+  const [searchParams] = useSearchParams();
   const {
-    reset,
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<AuthPageFormType>({
     defaultValues: {
-      email: '',
+      email: searchParams.get('email') || '',
       password: '',
       name: '',
     },
@@ -50,6 +67,8 @@ export function AuthPage({ type }: IAuthPageProps) {
   const { btnText, headingText, isLoginPage } = useAuthPageInfo(type);
 
   const toast = useToast();
+
+  const navigate = useNavigate();
 
   const submit = async (values: ILoginForm) => {
     if (type === 'login') {
@@ -60,20 +79,44 @@ export function AuthPage({ type }: IAuthPageProps) {
         password: values.password,
       };
 
-      const { token } = await authPageServices.login(newValues);
+      try {
+        const { user } = await authPageServices.login(newValues);
 
-      toast.success({ title: token });
+        toast.success({ title: `Bem-vindo ${user.name}` });
+      } catch (e) {
+        if (axios.isAxiosError<IResponseError>(e)) {
+          toast.error({ title: e.response?.data?.message });
+          return;
+        }
+        toast.error({ title: 'Credenciais inválidas' });
+      }
 
       return;
     }
 
     if (type === 'register') {
-      // TODO: handle with errors
-      await api.post('/register', values);
-      toast.success({ title: 'Sucesso' });
+      try {
+        await authPageServices.register(values as IRegisterForm);
+        toast.success({
+          title: 'Sucesso',
+          isClosable: true,
+          onCloseComplete: () => {
+            navigate({
+              pathname: '/login',
+              search: `email=${values.email}`,
+            });
+          },
+        });
+      } catch (e) {
+        if (axios.isAxiosError<IResponseError>(e)) {
+          toast.error({
+            title: e.response?.data?.message,
+          });
+          return;
+        }
+        toast.error({ title: 'Erro ao se registrar' });
+      }
     }
-
-    reset();
   };
 
   return (
