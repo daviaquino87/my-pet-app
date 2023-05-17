@@ -24,6 +24,7 @@ import {
 import { useToast } from '../../hooks/use-toast';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+import { useAuthDispatch } from '../../context/auth-context';
 
 interface ISession {
   token: string;
@@ -70,6 +71,8 @@ export function AuthPage({ type }: IAuthPageProps) {
 
   const navigate = useNavigate();
 
+  const dispatch = useAuthDispatch();
+
   const submit = async (values: ILoginForm) => {
     if (type === 'login') {
       // TODO: handle with errors
@@ -80,9 +83,14 @@ export function AuthPage({ type }: IAuthPageProps) {
       };
 
       try {
-        const { user } = await authPageServices.login(newValues);
-
+        const { user, token } = await authPageServices.login(newValues);
         toast.success({ title: `Bem-vindo ${user.name}` });
+
+        dispatch({ token, user });
+
+        localStorage.setItem('@data', JSON.stringify({ token, user }));
+
+        navigate('/');
       } catch (e) {
         if (axios.isAxiosError<IResponseError>(e)) {
           toast.error({ title: e.response?.data?.message });
