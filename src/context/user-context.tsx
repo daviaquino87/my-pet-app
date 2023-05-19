@@ -14,8 +14,6 @@ export function UserProvider() {
     if (userData) {
       setLoading(false);
       setUser(JSON.parse(userData));
-
-      console.log(JSON.parse(userData));
     }
     setLoading(false);
   }, []);

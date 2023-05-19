@@ -1,27 +1,9 @@
-import {
-  Center,
-  Flex,
-  Heading,
-  IconButton,
-  Image,
-  Text,
-} from '@chakra-ui/react';
-import { useUser } from '../../context/user-context';
+import { Box, Flex, Heading, IconButton, Spinner } from '@chakra-ui/react';
 import { privateApi } from '../../services/api';
 import { useQuery } from '@tanstack/react-query';
 import { AddIcon } from '@chakra-ui/icons';
-
-// interface ISpending {
-//   created_at: string;
-//   date: string;
-//   id: string;
-//   price: number;
-//   user_id: string;
-// }
-
-// interface ISpendingResponse {
-//   spendings: ISpending[];
-// }
+import { currency } from '../../utils/currency';
+import { Link } from 'react-router-dom';
 
 interface IBalanceResponse {
   balance: number;
@@ -33,52 +15,34 @@ async function fetchSpendings() {
 }
 
 export function HomePage() {
-  const { user } = useUser();
-
   const { data } = useQuery<IBalanceResponse>(['spendings'], () =>
     fetchSpendings()
   );
 
-  // const create = () => {
-  //   privateApi.post('/spendings', {
-  //     price: 150.21,
-  //     date: '2023-04-12 13:23:32',
-  //   });
-  // };
   return (
-    <Flex direction="column">
-      <Flex
-        h="16"
-        bg="white"
-        w="full"
-        alignItems="center"
-        justifyContent="space-between"
-        px={4}
-        borderBottom="1px"
-        borderBottomColor="gray.200"
-      >
-        <Image
-          src={process.env.PUBLIC_URL + '/logo-cat.png'}
-          title="Logo cat"
-          w={10}
-          h={10}
+    <Flex align="center" pt={52} direction="column">
+      <Box h="24">
+        {data ? (
+          <Heading size="3xl">{currency(Number(data?.balance || 0))}</Heading>
+        ) : (
+          <Spinner />
+        )}
+      </Box>
+
+      <Link to="/new">
+        <IconButton
+          rounded="full"
+          aria-label="Add spending"
+          icon={<AddIcon />}
+          width={16}
+          height={16}
+          bg="orange.300"
+          shadow="0 0 0 0.5rem var(--chakra-colors-orange-100)"
+          _hover={{
+            bg: 'orange.400',
+          }}
         />
-        <Text fontWeight="medium" fontSize={18}>
-          {user.name}
-        </Text>
-      </Flex>
-      <Flex direction="column">
-        <Center>
-          <Heading>{data?.balance}</Heading>
-        </Center>
-        <Center>
-          <IconButton
-            rounded="full"
-            aria-label="Add spending"
-            icon={<AddIcon />}
-          />
-        </Center>
-      </Flex>
+      </Link>
     </Flex>
   );
 }
