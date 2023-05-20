@@ -8,6 +8,8 @@ import {
   IconButton,
   Stack,
   Button,
+  FormControl,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 import { Controller, useForm } from 'react-hook-form';
 import { CalendarPanel } from 'chakra-dayzed-datepicker';
@@ -67,9 +69,19 @@ const Calendar = forwardRef((rest: any, ref: any) => {
   );
 });
 
+interface IFormState {
+  price: string | number;
+  date: Date | string;
+}
+
 export function NewSpendingPage() {
-  const { control, handleSubmit, reset } = useForm({
-    mode: 'onBlur',
+  const {
+    control,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { errors },
+  } = useForm<IFormState>({
     defaultValues: {
       price: '',
       date: new Date(),
@@ -80,8 +92,11 @@ export function NewSpendingPage() {
 
   const toast = useToast();
 
-  const submit = async (values: any) => {
-    console.log('debug:name', values);
+  const submit = async (values: IFormState) => {
+    if (!values.price) {
+      setError('price', { message: 'Insira um valor válido' });
+      return;
+    }
 
     await privateApi.post('/spendings', values);
 
@@ -89,6 +104,7 @@ export function NewSpendingPage() {
 
     toast.success({ title: 'Criado com sucesso' });
   };
+
   return (
     <Container maxW="96" pt={20}>
       <Stack spacing={10}>
@@ -102,11 +118,21 @@ export function NewSpendingPage() {
         </HStack>
 
         <Stack as="form" spacing="10" onSubmit={handleSubmit(submit)}>
-          <Controller
-            control={control}
-            name="price"
-            render={({ field }) => <CustomCurrencyInput {...field} />}
-          />
+          <Stack>
+            <FormControl isInvalid={!!errors.price?.message}>
+              <Controller
+                control={control}
+                name="price"
+                rules={{
+                  required: 'Campo obrigatório',
+                }}
+                render={({ field }) => <CustomCurrencyInput {...field} />}
+              />
+              <FormErrorMessage h="20px">
+                {errors.price?.message}
+              </FormErrorMessage>
+            </FormControl>
+          </Stack>
 
           <Controller
             control={control}
