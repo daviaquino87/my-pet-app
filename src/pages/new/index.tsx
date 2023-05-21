@@ -106,7 +106,7 @@ export function NewSpendingPage() {
   };
 
   return (
-    <Container maxW="96" pt={20}>
+    <Container maxW="96" pt={16}>
       <Stack spacing={10}>
         <HStack spacing="5">
           <IconButton
@@ -128,9 +128,7 @@ export function NewSpendingPage() {
                 }}
                 render={({ field }) => <CustomCurrencyInput {...field} />}
               />
-              <FormErrorMessage h="20px">
-                {errors.price?.message}
-              </FormErrorMessage>
+              <FormErrorMessage>{errors.price?.message}</FormErrorMessage>
             </FormControl>
           </Stack>
 
