@@ -5,6 +5,7 @@ import { HomePage } from '../pages/home';
 import { UserProvider } from '../context/user-context';
 import { NewSpendingPage } from '../pages/new';
 import { LayoutPage } from '../pages/layout';
+import { ReportsPage } from '../pages/reports';
 
 export function Router() {
   return (
@@ -13,6 +14,7 @@ export function Router() {
         <Route element={<LayoutPage />}>
           <Route index element={<HomePage />} />
           <Route path="/new" element={<NewSpendingPage />} />
+          <Route path="/reports" element={<ReportsPage />} />
         </Route>
       </Route>
       <Route path="/login" element={<LoginPage />} />

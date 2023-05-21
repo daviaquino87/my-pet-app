@@ -128,7 +128,15 @@ export function AuthPage({ type }: IAuthPageProps) {
   };
 
   return (
-    <Center minH="100vh" display="flex" flexDirection="column" bg="gray.50">
+    <Center
+      minH="100vh"
+      display="flex"
+      flexDirection="column"
+      bg="gray.50"
+      _dark={{
+        bg: 'gray.800',
+      }}
+    >
       <Stack mt={-20} spacing="3">
         <Center>
           <Heading mx={10} as="h4" fontSize="3xl">
