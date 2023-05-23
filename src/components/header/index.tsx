@@ -1,10 +1,12 @@
 import {
+  Avatar,
   Button,
   Flex,
   IconButton,
   Image,
   Text,
   Tooltip,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { useUser } from '../../context/user-context';
 import { Link } from 'react-router-dom';
@@ -13,6 +15,8 @@ import { ToggleTheme } from './toggle-theme';
 
 export function HeaderApp() {
   const { user } = useUser();
+
+  const [canView] = useMediaQuery('(min-width: 425px)');
 
   return (
     <Flex
@@ -28,15 +32,29 @@ export function HeaderApp() {
       }}
     >
       <Flex alignItems="center" gap={4}>
-        <Image
-          src={process.env.PUBLIC_URL + '/logo-cat.png'}
-          title="Logo cat"
-          w={10}
-          h={10}
-        />
-        <Text fontWeight="medium" fontSize={18}>
-          {user.name}
-        </Text>
+        {canView && (
+          <Image
+            src={process.env.PUBLIC_URL + '/logo-cat.png'}
+            title="Logo cat"
+            w={10}
+            h={10}
+          />
+        )}
+        {canView ? (
+          <Text fontWeight="medium" fontSize={18}>
+            {user.name}
+          </Text>
+        ) : (
+          <Avatar
+            bg="orange.50"
+            color="orange.400"
+            size="sm"
+            border="1px"
+            name={user.name}
+            w={8}
+            h={8}
+          />
+        )}
       </Flex>
       <Flex gap={4} alignItems="center">
         <ToggleTheme />
