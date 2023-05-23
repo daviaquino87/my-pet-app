@@ -15,6 +15,12 @@ import {
   TableContainer,
   Button,
   Tooltip,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
 } from '@chakra-ui/react';
 import {
   ArrowBackIcon,
@@ -25,10 +31,11 @@ import {
 
 import { ISpendingResponse } from '../../types/spending';
 import { privateApi } from '../../services/api';
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useRef, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { currency } from '../../utils/currency';
 import { useBack } from '../../hooks/use-back';
+import { format } from 'date-fns';
 
 async function fetchReports(page = 1): Promise<ISpendingResponse> {
   const params = { page };
@@ -42,6 +49,12 @@ async function fetchReports(page = 1): Promise<ISpendingResponse> {
 export function ReportsPage() {
   const back = useBack();
 
+  const cancelRef = useRef(null);
+
+  const [selectedSpendingId, setSelectedSpendingId] = useState<null | string>(
+    null
+  );
+
   const [page, setPage] = useState(1);
 
   const { data, isLoading } = useQuery(
@@ -51,6 +64,36 @@ export function ReportsPage() {
       keepPreviousData: true,
     }
   );
+
+  const queryClient = useQueryClient();
+
+  const removeMutation = useMutation({
+    mutationFn: async (id: string) => {
+      return privateApi.delete(`/spendings/delete/${id}`);
+    },
+    onSuccess: () => {
+      setSelectedSpendingId(null);
+      queryClient.invalidateQueries(['reports']);
+    },
+  });
+
+  const handleCloseConfirm = () => {
+    setSelectedSpendingId(null);
+  };
+
+  const handleRemove = () => {
+    if (selectedSpendingId) {
+      removeMutation.mutate(selectedSpendingId);
+    }
+  };
+
+  const handleOpenConfirm = (id: string) => {
+    setSelectedSpendingId(id);
+  };
+
+  const handleConfirm = () => {
+    handleRemove();
+  };
 
   const handlePrevious = () => {
     setPage((prev) => prev - 1);
@@ -92,7 +135,7 @@ export function ReportsPage() {
                 <Tbody>
                   {data?.spendings.map((item) => (
                     <Tr key={item.id}>
-                      <Td>{new Date(item.date).toLocaleDateString()}</Td>
+                      <Td>{format(new Date(item.date), 'dd/MM/yyyy')}</Td>
                       <Td isNumeric>{currency(item.price)}</Td>
                       <Td textAlign="center">
                         <IconButton
@@ -103,6 +146,7 @@ export function ReportsPage() {
                             bg: 'red.100',
                             color: 'red.500',
                           }}
+                          onClick={() => handleOpenConfirm(item.id)}
                         />
                       </Td>
                     </Tr>
@@ -138,6 +182,32 @@ export function ReportsPage() {
           </>
         )}
       </Stack>
+      <AlertDialog
+        isOpen={!!selectedSpendingId}
+        leastDestructiveRef={cancelRef}
+        onClose={handleCloseConfirm}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Remover despesa
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Você tem certeza? Você não pode desfazer esta ação.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={handleCloseConfirm}>
+                Cancelar
+              </Button>
+              <Button colorScheme="red" onClick={handleConfirm} ml={3}>
+                Remover
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Container>
   );
 }
