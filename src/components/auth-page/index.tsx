@@ -190,7 +190,7 @@ export function AuthPage({ type }: IAuthPageProps) {
                 <FormLabel>Senha</FormLabel>
                 <Input
                   type="password"
-                  placeholder="Seanh"
+                  placeholder="Senha"
                   {...register('password', { required: 'Campo obrigatório' })}
                 />
                 <Flex h="30px" alignItems="center">
