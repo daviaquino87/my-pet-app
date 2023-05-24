@@ -1,11 +1,7 @@
 import { forwardRef, useState } from 'react';
 
-import { ArrowBackIcon } from '@chakra-ui/icons';
 import {
   Container,
-  HStack,
-  Heading,
-  IconButton,
   Stack,
   Button,
   FormControl,
@@ -18,7 +14,7 @@ import { CustomCurrencyInput } from './input-currenct';
 import { endOfDay, format } from 'date-fns';
 import { privateApi } from '../../services/api';
 import { useToast } from '../../hooks/use-toast';
-import { useNavigate } from 'react-router-dom';
+import { PageTitle } from '../../components/page-title';
 
 const Calendar = forwardRef((rest: any, ref: any) => {
   const demoDate = new Date();
@@ -88,8 +84,6 @@ export function NewSpendingPage() {
     },
   });
 
-  const navigate = useNavigate();
-
   const toast = useToast();
 
   const submit = async (values: IFormState) => {
@@ -108,14 +102,7 @@ export function NewSpendingPage() {
   return (
     <Container maxW="96" pt={16}>
       <Stack spacing={10}>
-        <HStack spacing="5">
-          <IconButton
-            onClick={() => navigate(-1)}
-            icon={<ArrowBackIcon />}
-            aria-label="Voltar"
-          />
-          <Heading size="md">Nova despesa</Heading>
-        </HStack>
+        <PageTitle title="Nova despesa" />
 
         <Stack as="form" spacing="10" onSubmit={handleSubmit(submit)}>
           <Stack>
