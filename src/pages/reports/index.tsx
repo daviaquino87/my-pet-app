@@ -2,7 +2,6 @@ import {
   Center,
   Container,
   HStack,
-  Heading,
   IconButton,
   Spinner,
   Stack,
@@ -15,27 +14,24 @@ import {
   TableContainer,
   Button,
   Tooltip,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
+  Input,
 } from '@chakra-ui/react';
 import {
-  ArrowBackIcon,
   ArrowLeftIcon,
   ArrowRightIcon,
+  CheckIcon,
   DeleteIcon,
+  EditIcon,
 } from '@chakra-ui/icons';
 
-import { ISpendingResponse } from '../../types/spending';
+import { ISpendingResponse, ISpending } from '../../types/spending';
 import { privateApi } from '../../services/api';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { currency } from '../../utils/currency';
-import { useBack } from '../../hooks/use-back';
 import { format } from 'date-fns';
+import { ConfirmDeleteDialog } from '../../components/confirm-delete-dialog';
+import { PageTitle } from '../../components/page-title';
 
 async function fetchReports(page = 1): Promise<ISpendingResponse> {
   const params = { page };
@@ -46,11 +42,68 @@ async function fetchReports(page = 1): Promise<ISpendingResponse> {
   return response.data;
 }
 
+interface SpendingItemProps extends Pick<ISpending, 'id' | 'price' | 'date'> {
+  onOpenConfirmDelete: (id: string) => void;
+}
+
+function SpendingItem({
+  id,
+  date,
+  price,
+  onOpenConfirmDelete,
+}: SpendingItemProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  return (
+    <Tr key={id}>
+      <Td>{format(new Date(date), 'dd/MM/yyyy')}</Td>
+      <Td isNumeric>
+        {isEditing ? <Input size="sm" defaultValue={price} /> : currency(price)}
+      </Td>
+      <Td textAlign="center">
+        <HStack>
+          <IconButton
+            size="xs"
+            aria-label="Remover item"
+            icon={<DeleteIcon />}
+            _hover={{
+              bg: 'red.100',
+              color: 'red.500',
+            }}
+            onClick={() => onOpenConfirmDelete(id)}
+          />
+
+          {!isEditing && (
+            <IconButton
+              size="xs"
+              aria-label="Editar item"
+              icon={<EditIcon />}
+              _hover={{
+                bg: 'orange.100',
+                color: 'orange.500',
+              }}
+              onClick={() => setIsEditing(true)}
+            />
+          )}
+
+          {isEditing && (
+            <IconButton
+              size="xs"
+              aria-label="Editar item"
+              icon={<CheckIcon />}
+              _hover={{
+                bg: 'green.100',
+                color: 'green.500',
+              }}
+              onClick={() => setIsEditing(false)}
+            />
+          )}
+        </HStack>
+      </Td>
+    </Tr>
+  );
+}
+
 export function ReportsPage() {
-  const back = useBack();
-
-  const cancelRef = useRef(null);
-
   const [selectedSpendingId, setSelectedSpendingId] = useState<null | string>(
     null
   );
@@ -109,14 +162,8 @@ export function ReportsPage() {
   return (
     <Container maxW="container.md" pt={14} pb={10}>
       <Stack spacing={10}>
-        <HStack spacing="5">
-          <IconButton
-            onClick={back}
-            icon={<ArrowBackIcon />}
-            aria-label="Voltar"
-          />
-          <Heading size="md">Relatório</Heading>
-        </HStack>
+        <PageTitle title="Relatório" />
+
         {isLoading ? (
           <Center>
             <Spinner />
@@ -134,22 +181,12 @@ export function ReportsPage() {
                 </Thead>
                 <Tbody>
                   {data?.spendings.map((item) => (
-                    <Tr key={item.id}>
-                      <Td>{format(new Date(item.date), 'dd/MM/yyyy')}</Td>
-                      <Td isNumeric>{currency(item.price)}</Td>
-                      <Td textAlign="center">
-                        <IconButton
-                          size="xs"
-                          aria-label="Remover item"
-                          icon={<DeleteIcon />}
-                          _hover={{
-                            bg: 'red.100',
-                            color: 'red.500',
-                          }}
-                          onClick={() => handleOpenConfirm(item.id)}
-                        />
-                      </Td>
-                    </Tr>
+                    <SpendingItem
+                      id={item.id}
+                      date={item.date}
+                      price={item.price}
+                      onOpenConfirmDelete={handleOpenConfirm}
+                    />
                   ))}
                 </Tbody>
               </Table>
@@ -182,32 +219,13 @@ export function ReportsPage() {
           </>
         )}
       </Stack>
-      <AlertDialog
+      <ConfirmDeleteDialog
         isOpen={!!selectedSpendingId}
-        leastDestructiveRef={cancelRef}
         onClose={handleCloseConfirm}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Remover despesa
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              Você tem certeza? Você não pode desfazer esta ação.
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={handleCloseConfirm}>
-                Cancelar
-              </Button>
-              <Button colorScheme="red" onClick={handleConfirm} ml={3}>
-                Remover
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+        onOK={handleConfirm}
+        title="Remover despesa"
+        description="Você tem certeza que deseja remover?"
+      />
     </Container>
   );
 }
