@@ -1,9 +1,8 @@
-import { Box, Flex, Heading, IconButton, Spinner } from '@chakra-ui/react';
-import { privateApi } from '../../services/api';
+import { Box, Flex, Heading, Spinner } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
-import { AddIcon } from '@chakra-ui/icons';
+import { ButtonAddLink } from '../../components/button-add-link';
+import { privateApi } from '../../services/api';
 import { currency } from '../../utils/currency';
-import { Link } from 'react-router-dom';
 
 interface IBalanceResponse {
   balance: number;
@@ -14,35 +13,24 @@ async function fetchSpendings() {
   return req.data;
 }
 
+function useSpendings() {
+  return useQuery<IBalanceResponse>(['spendings'], () => fetchSpendings());
+}
+
 export function HomePage() {
-  const { data } = useQuery<IBalanceResponse>(['spendings'], () =>
-    fetchSpendings()
-  );
+  const { data, isLoading } = useSpendings();
 
   return (
     <Flex align="center" pt={52} direction="column">
       <Box h="24">
-        {data ? (
-          <Heading size="3xl">{currency(Number(data?.balance || 0))}</Heading>
-        ) : (
+        {isLoading ? (
           <Spinner />
+        ) : (
+          <Heading size="3xl">{currency(Number(data?.balance || 0))}</Heading>
         )}
       </Box>
 
-      <Link to="/new">
-        <IconButton
-          rounded="full"
-          aria-label="Add spending"
-          icon={<AddIcon />}
-          width={16}
-          height={16}
-          bg="orange.300"
-          shadow="0 0 0 0.5rem var(--chakra-colors-orange-100)"
-          _hover={{
-            bg: 'orange.400',
-          }}
-        />
-      </Link>
+      <ButtonAddLink />
     </Flex>
   );
 }
