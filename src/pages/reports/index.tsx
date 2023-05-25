@@ -14,24 +14,33 @@ import {
   TableContainer,
   Button,
   Tooltip,
-  Input,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  FormControl,
+  FormLabel,
 } from '@chakra-ui/react';
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
-  CheckIcon,
   DeleteIcon,
   EditIcon,
 } from '@chakra-ui/icons';
 
 import { ISpendingResponse, ISpending } from '../../types/spending';
 import { privateApi } from '../../services/api';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { currency } from '../../utils/currency';
 import { format } from 'date-fns';
 import { ConfirmDeleteDialog } from '../../components/confirm-delete-dialog';
 import { PageTitle } from '../../components/page-title';
+import { CustomCurrencyInput } from '../../components/input-currency';
+import { Calendar } from '../../components/calendar';
 
 async function fetchReports(page = 1): Promise<ISpendingResponse> {
   const params = { page };
@@ -42,8 +51,12 @@ async function fetchReports(page = 1): Promise<ISpendingResponse> {
   return response.data;
 }
 
-interface SpendingItemProps extends Pick<ISpending, 'id' | 'price' | 'date'> {
+type EditSpendingType = Pick<ISpending, 'id' | 'price' | 'date'>;
+
+interface SpendingItemProps extends EditSpendingType {
   onOpenConfirmDelete: (id: string) => void;
+  onOpenEdit: (item: EditSpendingType) => void;
+  isEditing: boolean;
 }
 
 function SpendingItem({
@@ -51,14 +64,12 @@ function SpendingItem({
   date,
   price,
   onOpenConfirmDelete,
+  onOpenEdit,
 }: SpendingItemProps) {
-  const [isEditing, setIsEditing] = useState(false);
   return (
     <Tr key={id}>
       <Td>{format(new Date(date), 'dd/MM/yyyy')}</Td>
-      <Td isNumeric>
-        {isEditing ? <Input size="sm" defaultValue={price} /> : currency(price)}
-      </Td>
+      <Td isNumeric>{currency(price)}</Td>
       <Td textAlign="center">
         <HStack>
           <IconButton
@@ -72,31 +83,18 @@ function SpendingItem({
             onClick={() => onOpenConfirmDelete(id)}
           />
 
-          {!isEditing && (
-            <IconButton
-              size="xs"
-              aria-label="Editar item"
-              icon={<EditIcon />}
-              _hover={{
-                bg: 'orange.100',
-                color: 'orange.500',
-              }}
-              onClick={() => setIsEditing(true)}
-            />
-          )}
-
-          {isEditing && (
-            <IconButton
-              size="xs"
-              aria-label="Editar item"
-              icon={<CheckIcon />}
-              _hover={{
-                bg: 'green.100',
-                color: 'green.500',
-              }}
-              onClick={() => setIsEditing(false)}
-            />
-          )}
+          <IconButton
+            size="xs"
+            aria-label="Editar item"
+            icon={<EditIcon />}
+            _hover={{
+              bg: 'orange.100',
+              color: 'orange.500',
+            }}
+            onClick={() => {
+              onOpenEdit({ id, price, date });
+            }}
+          />
         </HStack>
       </Td>
     </Tr>
@@ -104,6 +102,7 @@ function SpendingItem({
 }
 
 export function ReportsPage() {
+  // TODO: change this to Spending object to reuse by edit dialog
   const [selectedSpendingId, setSelectedSpendingId] = useState<null | string>(
     null
   );
@@ -117,6 +116,12 @@ export function ReportsPage() {
       keepPreviousData: true,
     }
   );
+
+  const [selectedSpending, setSelectedSpending] = useState<null | ISpending>(
+    null
+  );
+
+  const initialRef = useRef<HTMLInputElement>(null);
 
   const queryClient = useQueryClient();
 
@@ -182,10 +187,13 @@ export function ReportsPage() {
                 <Tbody>
                   {data?.spendings.map((item) => (
                     <SpendingItem
+                      key={item.id}
                       id={item.id}
                       date={item.date}
                       price={item.price}
                       onOpenConfirmDelete={handleOpenConfirm}
+                      onOpenEdit={() => setSelectedSpending(item)}
+                      isEditing={Boolean(selectedSpending)}
                     />
                   ))}
                 </Tbody>
@@ -226,6 +234,40 @@ export function ReportsPage() {
         title="Remover despesa"
         description="Você tem certeza que deseja remover?"
       />
+
+      <Modal
+        initialFocusRef={initialRef}
+        isOpen={Boolean(selectedSpending)}
+        onClose={() => setSelectedSpending(null)}
+      >
+        <ModalOverlay />
+        <ModalContent w="fit-content">
+          <ModalHeader>Editar despesa</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl>
+              <FormLabel>Preço</FormLabel>
+              <CustomCurrencyInput
+                value={String(selectedSpending?.price)}
+                onChange={() => {}}
+                ref={initialRef}
+              />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Data</FormLabel>
+              <Calendar value={selectedSpending?.date} />
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button onClick={() => setSelectedSpending(null)}>Cancelar</Button>
+            <Button colorScheme="blue" ml={3}>
+              Editar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 }
