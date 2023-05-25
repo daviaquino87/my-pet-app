@@ -1,23 +1,13 @@
-import {
-  Avatar,
-  Button,
-  Flex,
-  IconButton,
-  Image,
-  Text,
-  Tooltip,
-  useMediaQuery,
-} from '@chakra-ui/react';
-import { useUser } from '../../context/user-context';
-import { Link } from 'react-router-dom';
-import { ArrowBackIcon, HamburgerIcon } from '@chakra-ui/icons';
-import { ToggleTheme } from './toggle-theme';
+import { Flex } from '@chakra-ui/react';
+import { ReactNode } from 'react';
 
-export function HeaderApp() {
-  const { user } = useUser();
+interface Props {
+  logo: ReactNode;
+  user: ReactNode;
+  actions: ReactNode;
+}
 
-  const [canView] = useMediaQuery('(min-width: 425px)');
-
+export function HeaderApp({ logo, user, actions }: Props) {
   return (
     <Flex
       h="16"
@@ -32,62 +22,11 @@ export function HeaderApp() {
       }}
     >
       <Flex alignItems="center" gap={4}>
-        {canView && (
-          <Image
-            src={process.env.PUBLIC_URL + '/logo-cat.png'}
-            title="Logo cat"
-            w={10}
-            h={10}
-          />
-        )}
-        {canView ? (
-          <Text fontWeight="medium" fontSize={18}>
-            {user.name}
-          </Text>
-        ) : (
-          <Avatar
-            bg="orange.50"
-            color="orange.400"
-            size="sm"
-            border="1px"
-            name={user.name}
-            w={8}
-            h={8}
-          />
-        )}
+        {logo}
+        {user}
       </Flex>
       <Flex gap={4} alignItems="center">
-        <ToggleTheme />
-        <Link to="/reports">
-          <Button
-            bg="blue.50"
-            color="blue.400"
-            _hover={{
-              bg: 'blue.100',
-              color: 'blue.500',
-            }}
-            _dark={{
-              bg: 'gray.700',
-              color: 'white',
-              _hover: {
-                bg: 'gray.600',
-              },
-            }}
-            rightIcon={<HamburgerIcon />}
-          >
-            Reports
-          </Button>
-        </Link>
-        <Tooltip label="Logout" placement="bottom">
-          <IconButton
-            aria-label="Logout"
-            _hover={{
-              bg: 'red.100',
-              color: 'red.500',
-            }}
-            icon={<ArrowBackIcon />}
-          />
-        </Tooltip>
+        {actions}
       </Flex>
     </Flex>
   );
