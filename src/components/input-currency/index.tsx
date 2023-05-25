@@ -4,18 +4,18 @@ import { CurrencyInput } from 'react-currency-mask';
 
 interface CustomCurrencyInputProps {
   onChange: (value: number | string) => void;
+  value: string | number;
 }
 
 export const CustomCurrencyInput = forwardRef(
   (
-    { onChange, ...props }: CustomCurrencyInputProps,
+    { onChange, value, ...props }: CustomCurrencyInputProps,
     ref: Ref<HTMLInputElement>
   ) => {
     return (
       <CurrencyInput
         {...props}
         ref={ref}
-        defaultValue={0}
         onChangeValue={(
           event: ChangeEvent<HTMLInputElement>,
           originalValue: string | number,
@@ -23,6 +23,7 @@ export const CustomCurrencyInput = forwardRef(
         ) => {
           onChange(originalValue);
         }}
+        value={value}
         InputElement={<Input placeholder="R$ Valor" />}
         currency="BRL"
       />
