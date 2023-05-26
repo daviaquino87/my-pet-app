@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { IAuthContext } from './auth-context';
 
 const UserContext = createContext<IAuthContext | null>(null);
@@ -29,6 +29,8 @@ export function UserProvider() {
     setLoading(false);
   }, []);
 
+  const { pathname } = useLocation();
+
   if (loading) {
     return (
       <Flex minH="100vh" justifyContent="center" alignItems="center">
@@ -39,6 +41,25 @@ export function UserProvider() {
 
   if (!user) {
     return <Navigate to="/login" replace />;
+  }
+
+  // TODO: this is a bad practice
+  const [, jwtData] = user?.token.split('.');
+  const tokenData = JSON.parse(window.atob(jwtData));
+
+  const now = Math.round(Date.now() / 1000);
+
+  if (now >= tokenData.exp) {
+    return (
+      <Navigate
+        to={{
+          pathname: '/login',
+          // TODO: use state
+          search: 'redirectTo=' + pathname,
+        }}
+        replace
+      />
+    );
   }
 
   return (

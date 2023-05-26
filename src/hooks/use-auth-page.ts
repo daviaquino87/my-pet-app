@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useToast } from './use-toast';
 import {
   ILoginForm,
@@ -10,13 +10,17 @@ export function useAuthPage() {
   const toast = useToast();
   const navigate = useNavigate();
 
+  const [searchParams] = useSearchParams();
+
+  const hasRedirectTo = searchParams.get('redirectTo') ?? '/';
+
   const onLogin = async (params: ILoginForm) => {
     const { user, token } = await authPageServices.login(params);
     toast.success({
       title: `Bem-vindo ${user.name}`,
       isClosable: true,
       onCloseComplete: () => {
-        navigate('/');
+        navigate(hasRedirectTo);
       },
     });
 
