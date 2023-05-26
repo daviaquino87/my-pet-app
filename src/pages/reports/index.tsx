@@ -41,12 +41,16 @@ import { ConfirmDeleteDialog } from '../../components/confirm-delete-dialog';
 import { PageTitle } from '../../components/page-title';
 import { CustomCurrencyInput } from '../../components/input-currency';
 import { Calendar } from '../../components/calendar';
+import { EndpointsEnum } from '../../enum/endpoints';
 
 async function fetchReports(page = 1): Promise<ISpendingResponse> {
   const params = { page };
-  const response = await privateApi.get<ISpendingResponse>('/spendings', {
-    params,
-  });
+  const response = await privateApi.get<ISpendingResponse>(
+    EndpointsEnum.SPENDINGS,
+    {
+      params,
+    }
+  );
 
   return response.data;
 }
@@ -127,7 +131,7 @@ export function ReportsPage() {
 
   const removeMutation = useMutation({
     mutationFn: async (id: string) => {
-      return privateApi.delete(`/spendings/delete/${id}`);
+      return privateApi.delete(`${EndpointsEnum.DELETE_SPENDING}/${id}`);
     },
     onSuccess: () => {
       setSelectedSpendingId(null);

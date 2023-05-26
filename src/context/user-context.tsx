@@ -18,6 +18,8 @@ export function UserProvider() {
     setLoading(false);
   }, []);
 
+  console.log('', loading);
+
   if (loading) {
     return (
       <Flex minH="100vh" justifyContent="center" alignItems="center">

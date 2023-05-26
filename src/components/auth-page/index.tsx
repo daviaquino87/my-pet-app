@@ -1,55 +1,31 @@
 import {
+  Button,
   Card,
+  CardBody,
   Center,
   Flex,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Input,
-  CardBody,
-  Button,
-  Image,
-  FormErrorMessage,
   Stack,
-  Heading,
 } from '@chakra-ui/react';
+import axios from 'axios';
+import LottiePlayer from 'lottie-react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { api } from '../../services/api';
+import { Link, useSearchParams } from 'react-router-dom';
+import { useAuthDispatch } from '../../context/auth-context';
+import { useAuthPage } from '../../hooks/use-auth-page';
+import { useToast } from '../../hooks/use-toast';
+import lottieCat from '../../lottie/65619-happy-cat.json';
+import { IResponseError } from '../../types/response/login';
 import { useAuthPageInfo } from './auth-page-hook';
 import {
   AuthPageFormType,
   IAuthPageProps,
   ILoginForm,
-  IRegisterForm,
 } from './auth-page.types';
-import { useToast } from '../../hooks/use-toast';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import axios from 'axios';
-import { useAuthDispatch } from '../../context/auth-context';
-
-interface ISession {
-  token: string;
-  user: {
-    id: string;
-    name: string;
-  };
-}
-
-interface ILoginResponse extends ISession {}
-
-interface IResponseError {
-  message: string;
-}
-
-const authPageServices = {
-  login: async (data: ILoginForm): Promise<ILoginResponse> => {
-    const response = await api.post('/session', data);
-    return response.data;
-  },
-  register: async (data: IRegisterForm): Promise<void> => {
-    const response = await api.post('/register', data);
-    return response.data;
-  },
-};
 
 export function AuthPage({ type }: IAuthPageProps) {
   const [searchParams] = useSearchParams();
@@ -65,33 +41,33 @@ export function AuthPage({ type }: IAuthPageProps) {
     },
   });
 
-  const { btnText, headingText, isLoginPage } = useAuthPageInfo(type);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { btnText, isLoginPage } = useAuthPageInfo(type);
 
   const toast = useToast();
 
-  const navigate = useNavigate();
-
   const dispatch = useAuthDispatch();
 
-  const submit = async (values: ILoginForm) => {
-    if (type === 'login') {
-      // TODO: handle with errors
+  const { onLogin, onRegister } = useAuthPage();
 
+  const submit = async (values: ILoginForm) => {
+    setIsLoading(true);
+    if (type === 'login') {
       const newValues = {
         email: values.email,
         password: values.password,
       };
 
       try {
-        const { user, token } = await authPageServices.login(newValues);
-        toast.success({ title: `Bem-vindo ${user.name}` });
+        const { token, user } = await onLogin(newValues);
 
         dispatch({ token, user });
-
         localStorage.setItem('@data', JSON.stringify({ token, user }));
-
-        navigate('/');
+        setIsLoading(false);
       } catch (e) {
+        setIsLoading(false);
+
         if (axios.isAxiosError<IResponseError>(e)) {
           toast.error({ title: e.response?.data?.message });
           return;
@@ -104,18 +80,11 @@ export function AuthPage({ type }: IAuthPageProps) {
 
     if (type === 'register') {
       try {
-        await authPageServices.register(values as IRegisterForm);
-        toast.success({
-          title: 'Sucesso',
-          isClosable: true,
-          onCloseComplete: () => {
-            navigate({
-              pathname: '/login',
-              search: `email=${values.email}`,
-            });
-          },
-        });
+        setIsLoading(false);
       } catch (e) {
+        await onRegister(values);
+        setIsLoading(false);
+
         if (axios.isAxiosError<IResponseError>(e)) {
           toast.error({
             title: e.response?.data?.message,
@@ -139,17 +108,11 @@ export function AuthPage({ type }: IAuthPageProps) {
     >
       <Stack mt={-20} spacing="3">
         <Center>
-          <Heading mx={10} as="h4" fontSize="3xl">
-            {headingText}
-          </Heading>
-        </Center>
-
-        <Center>
-          <Image
-            src={process.env.PUBLIC_URL + '/logo-cat.png'}
-            title="Logo cat"
-            w={14}
-            h={14}
+          <LottiePlayer
+            style={{
+              width: 100,
+            }}
+            animationData={lottieCat}
           />
         </Center>
 
@@ -209,13 +172,14 @@ export function AuthPage({ type }: IAuthPageProps) {
                   bg: 'blue.300',
                 }}
                 type="submit"
+                isLoading={isLoading}
               >
                 {btnText}
               </Button>
 
               <Center>
                 {isLoginPage ? (
-                  <Link to="/register">Registrar-se</Link>
+                  <Link to="/register">Criar uma conta</Link>
                 ) : (
                   <Link to="/login">Faça login</Link>
                 )}
