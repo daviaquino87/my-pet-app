@@ -3,13 +3,14 @@ import { useQuery } from '@tanstack/react-query';
 import { ButtonAddLink } from '../../components/button-add-link';
 import { privateApi } from '../../services/api';
 import { currency } from '../../utils/currency';
+import { EndpointsEnum } from '../../enum/endpoints';
 
 interface IBalanceResponse {
   balance: number;
 }
 
 async function fetchSpendings() {
-  const req = await privateApi.get('/users/balance');
+  const req = await privateApi.get(EndpointsEnum.BALANCE);
   return req.data;
 }
 

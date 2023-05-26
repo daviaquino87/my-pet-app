@@ -12,6 +12,7 @@ import { CustomCurrencyInput } from '../../components/input-currency';
 import { PageTitle } from '../../components/page-title';
 import { useToast } from '../../hooks/use-toast';
 import { privateApi } from '../../services/api';
+import { EndpointsEnum } from '../../enum/endpoints';
 
 interface IFormState {
   price: string | number;
@@ -40,7 +41,7 @@ export function NewSpendingPage() {
       return;
     }
 
-    await privateApi.post('/spendings', values);
+    await privateApi.post(EndpointsEnum.SPENDINGS, values);
 
     reset();
 
