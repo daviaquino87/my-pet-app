@@ -96,8 +96,11 @@ function SpendingItem({
 }
 
 export function ReportsPage() {
-  // TODO: change this to Spending object to reuse by edit dialog
   const [selectedSpendingId, setSelectedSpendingId] = useState<null | string>(
+    null
+  );
+
+  const [selectedSpending, setSelectedSpending] = useState<null | ISpending>(
     null
   );
 
@@ -109,10 +112,6 @@ export function ReportsPage() {
     {
       keepPreviousData: true,
     }
-  );
-
-  const [selectedSpending, setSelectedSpending] = useState<null | ISpending>(
-    null
   );
 
   const queryClient = useQueryClient();
