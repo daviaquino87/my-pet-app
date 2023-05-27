@@ -18,8 +18,15 @@ import {
   Td,
   Th,
   Thead,
-  Tooltip,
   Tr,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from '@chakra-ui/react';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -32,6 +39,7 @@ import { privateApi } from '../../services/api';
 import { ISpending, ISpendingResponse } from '../../types/spending';
 import { currency } from '../../utils/currency';
 import { EditDialog, SpendingBaseType } from './edit-dialog';
+import { OnDateSelected, RangeCalendarPanel } from 'chakra-dayzed-datepicker';
 
 async function fetchReports(page = 1): Promise<ISpendingResponse> {
   const params = { page };
@@ -104,6 +112,13 @@ export function ReportsPage() {
     null
   );
 
+  const [selectedDates, setSelectedDates] = useState<Date[]>([
+    new Date(),
+    new Date(),
+  ]);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const [page, setPage] = useState(1);
 
   const { data, isLoading } = useQuery(
@@ -164,6 +179,30 @@ export function ReportsPage() {
   const isPreviousDisabled = page === 1;
   const isNextDisabled = data?.spendings.length !== 10;
 
+  const handleOnDateSelected: OnDateSelected = ({ selectable, date }) => {
+    let newDates = [...selectedDates];
+    if (selectedDates.length) {
+      if (selectedDates.length === 1) {
+        let firstTime = selectedDates[0];
+        if (firstTime < date) {
+          newDates.push(date);
+        } else {
+          newDates.unshift(date);
+        }
+        setSelectedDates(newDates);
+        return;
+      }
+
+      if (newDates.length === 2) {
+        setSelectedDates([date]);
+        return;
+      }
+    } else {
+      newDates.push(date);
+      setSelectedDates(newDates);
+    }
+  };
+
   return (
     <Container maxW="container.md" pt={14} pb={10}>
       <Stack spacing={10}>
@@ -200,11 +239,9 @@ export function ReportsPage() {
               </Table>
             </TableContainer>
             <HStack justifyContent="space-between">
-              <Tooltip label="Em breve" placement="top">
-                <Button isDisabled size="sm">
-                  Download
-                </Button>
-              </Tooltip>
+              <Button size="sm" onClick={onOpen}>
+                Download
+              </Button>
               <HStack>
                 <Button
                   size="sm"
@@ -243,6 +280,53 @@ export function ReportsPage() {
         date={String(selectedSpending?.date)}
         onEdit={handleEdit}
       />
+
+      <Modal isOpen={isOpen} onClose={onClose} size="2xl">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Exportar relatório</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <RangeCalendarPanel
+              selected={selectedDates}
+              dayzedHookProps={{
+                showOutsideDays: false,
+                onDateSelected: handleOnDateSelected,
+                selected: selectedDates,
+                monthsToDisplay: 2,
+              }}
+              configs={{
+                dateFormat: 'yyyy-MM-dd',
+                monthNames: [
+                  'Jan',
+                  'Fev',
+                  'Mar',
+                  'Abr',
+                  'Mai',
+                  'Jun',
+                  'Jul',
+                  'Ago',
+                  'Set',
+                  'Out',
+                  'Nov',
+                  'Dez',
+                ],
+                dayNames: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+                firstDayOfWeek: 0,
+              }}
+            />
+          </ModalBody>
+
+          <ModalFooter>
+            <Button mr={3} onClick={onClose}>
+              Cancaler
+            </Button>
+            <Button isDisabled colorScheme="orange">
+              Exportar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 }
