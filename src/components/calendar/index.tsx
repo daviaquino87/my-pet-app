@@ -31,6 +31,7 @@ export const Calendar = forwardRef(
     return (
       <CalendarPanel
         {...rest}
+        ref={ref}
         dayzedHookProps={{
           selected: date,
           onDateSelected: handleOnDateSelected,
