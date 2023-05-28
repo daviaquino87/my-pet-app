@@ -5,4 +5,5 @@ export enum EndpointsEnum {
   BALANCE = '/users/balance',
   DELETE_SPENDING = '/spendings/delete',
   UPDATE_SPENDING = '/spendings/update',
+  EXPORT_SPENDING = '/spendings/report',
 }
