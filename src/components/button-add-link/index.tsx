@@ -25,6 +25,7 @@ export function ButtonAddLink({ size = 'md' }: Props) {
         height={btnSize}
         bg="orange.300"
         shadow="0 0 0 0.5rem var(--chakra-colors-orange-100)"
+        color="gray.800"
         _hover={{
           bg: 'orange.400',
         }}

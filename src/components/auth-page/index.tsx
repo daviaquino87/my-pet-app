@@ -32,6 +32,7 @@ export function AuthPage({ type }: IAuthPageProps) {
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors },
   } = useForm<AuthPageFormType>({
     defaultValues: {
@@ -70,8 +71,14 @@ export function AuthPage({ type }: IAuthPageProps) {
 
         if (axios.isAxiosError<IResponseError>(e)) {
           toast.error({ title: e.response?.data?.message });
+          setFocus('password');
+          handleSelectPasswordInput();
+
           return;
         }
+        setFocus('password');
+        handleSelectPasswordInput();
+
         toast.error({ title: 'Credenciais inválidas' });
       }
 
@@ -94,6 +101,12 @@ export function AuthPage({ type }: IAuthPageProps) {
         toast.error({ title: 'Erro ao se registrar' });
       }
     }
+  };
+
+  const handleSelectPasswordInput = () => {
+    (
+      document.getElementById('auth-input-password') as HTMLInputElement
+    )?.select();
   };
 
   return (
@@ -155,6 +168,7 @@ export function AuthPage({ type }: IAuthPageProps) {
                   type="password"
                   placeholder="Senha"
                   {...register('password', { required: 'Campo obrigatório' })}
+                  id="auth-input-password"
                 />
                 <Flex h="30px" alignItems="center">
                   <FormErrorMessage m={0}>

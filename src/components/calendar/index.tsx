@@ -1,6 +1,7 @@
 import { CalendarPanel } from 'chakra-dayzed-datepicker';
 import { endOfDay, format } from 'date-fns';
 import { forwardRef, useState } from 'react';
+import { chakraCalendarConfig } from '../../constants/chakra-calendar-condig';
 
 interface Props {
   onChange?: (newDate: string | undefined) => void;
@@ -31,29 +32,12 @@ export const Calendar = forwardRef(
     return (
       <CalendarPanel
         {...rest}
+        ref={ref}
         dayzedHookProps={{
           selected: date,
           onDateSelected: handleOnDateSelected,
         }}
-        configs={{
-          dateFormat: 'yyyy-MM-dd',
-          monthNames: [
-            'Jan',
-            'Fev',
-            'Mar',
-            'Abr',
-            'Mai',
-            'Jun',
-            'Jul',
-            'Ago',
-            'Set',
-            'Out',
-            'Nov',
-            'Dez',
-          ],
-          dayNames: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
-          firstDayOfWeek: 0,
-        }}
+        configs={chakraCalendarConfig}
       />
     );
   }

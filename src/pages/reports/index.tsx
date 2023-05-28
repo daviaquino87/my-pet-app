@@ -1,4 +1,11 @@
 import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  DeleteIcon,
+  EditIcon,
+} from '@chakra-ui/icons';
+import {
+  Button,
   Center,
   Container,
   HStack,
@@ -6,42 +13,26 @@ import {
   Spinner,
   Stack,
   Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   TableContainer,
-  Button,
-  Tooltip,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  FormControl,
-  FormLabel,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  useDisclosure,
 } from '@chakra-ui/react';
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  DeleteIcon,
-  EditIcon,
-} from '@chakra-ui/icons';
 
-import { ISpendingResponse, ISpending } from '../../types/spending';
-import { privateApi } from '../../services/api';
-import { useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { currency } from '../../utils/currency';
 import { format } from 'date-fns';
+import { useState } from 'react';
 import { ConfirmDeleteDialog } from '../../components/confirm-delete-dialog';
 import { PageTitle } from '../../components/page-title';
-import { CustomCurrencyInput } from '../../components/input-currency';
-import { Calendar } from '../../components/calendar';
 import { EndpointsEnum } from '../../enum/endpoints';
+import { privateApi } from '../../services/api';
+import { ISpending, ISpendingResponse } from '../../types/spending';
+import { currency } from '../../utils/currency';
+import { EditDialog, SpendingBaseType } from './edit-dialog';
+import { ExportDialog } from './export-dialog';
 
 async function fetchReports(page = 1): Promise<ISpendingResponse> {
   const params = { page };
@@ -106,10 +97,19 @@ function SpendingItem({
 }
 
 export function ReportsPage() {
-  // TODO: change this to Spending object to reuse by edit dialog
   const [selectedSpendingId, setSelectedSpendingId] = useState<null | string>(
     null
   );
+
+  const [selectedSpending, setSelectedSpending] = useState<null | ISpending>(
+    null
+  );
+
+  const {
+    isOpen: isExportDialogOpen,
+    onOpen: onOpenExportDialog,
+    onClose: onCloseExportDialog,
+  } = useDisclosure();
 
   const [page, setPage] = useState(1);
 
@@ -120,12 +120,6 @@ export function ReportsPage() {
       keepPreviousData: true,
     }
   );
-
-  const [selectedSpending, setSelectedSpending] = useState<null | ISpending>(
-    null
-  );
-
-  const initialRef = useRef<HTMLInputElement>(null);
 
   const queryClient = useQueryClient();
 
@@ -163,6 +157,15 @@ export function ReportsPage() {
 
   const handleNext = () => {
     setPage((prev) => prev + 1);
+  };
+
+  const handleEdit = async (values: SpendingBaseType) => {
+    await privateApi.put(
+      `${EndpointsEnum.UPDATE_SPENDING}/${selectedSpending?.id}`,
+      values
+    );
+    setSelectedSpending(null);
+    queryClient.invalidateQueries(['reports']);
   };
 
   const isPreviousDisabled = page === 1;
@@ -204,11 +207,9 @@ export function ReportsPage() {
               </Table>
             </TableContainer>
             <HStack justifyContent="space-between">
-              <Tooltip label="Em breve" placement="top">
-                <Button isDisabled size="sm">
-                  Download
-                </Button>
-              </Tooltip>
+              <Button size="sm" onClick={onOpenExportDialog}>
+                Download
+              </Button>
               <HStack>
                 <Button
                   size="sm"
@@ -239,39 +240,16 @@ export function ReportsPage() {
         description="Você tem certeza que deseja remover?"
       />
 
-      <Modal
-        initialFocusRef={initialRef}
-        isOpen={Boolean(selectedSpending)}
+      <EditDialog
+        key={selectedSpending?.id}
+        isOpen={!!selectedSpending}
         onClose={() => setSelectedSpending(null)}
-      >
-        <ModalOverlay />
-        <ModalContent w="fit-content">
-          <ModalHeader>Editar despesa</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>Preço</FormLabel>
-              <CustomCurrencyInput
-                value={String(selectedSpending?.price)}
-                onChange={() => {}}
-                ref={initialRef}
-              />
-            </FormControl>
+        price={String(selectedSpending?.price)}
+        date={String(selectedSpending?.date)}
+        onEdit={handleEdit}
+      />
 
-            <FormControl mt={4}>
-              <FormLabel>Data</FormLabel>
-              <Calendar value={selectedSpending?.date} />
-            </FormControl>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button onClick={() => setSelectedSpending(null)}>Cancelar</Button>
-            <Button colorScheme="blue" ml={3}>
-              Editar
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <ExportDialog isOpen={isExportDialogOpen} onClose={onCloseExportDialog} />
     </Container>
   );
 }

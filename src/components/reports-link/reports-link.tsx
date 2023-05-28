@@ -1,5 +1,5 @@
-import { HamburgerIcon } from '@chakra-ui/icons';
 import { Button } from '@chakra-ui/react';
+import { MdBarChart } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
 export function ReportsLink() {
@@ -19,7 +19,9 @@ export function ReportsLink() {
             bg: 'gray.600',
           },
         }}
-        rightIcon={<HamburgerIcon />}
+        border="1px"
+        borderColor="blue.100"
+        rightIcon={<MdBarChart />}
       >
         Reports
       </Button>
