@@ -67,7 +67,15 @@ export function EditDialog({ isOpen, onClose, price, date, onEdit }: Props) {
 
         <ModalFooter>
           <Button onClick={onClose}>Cancelar</Button>
-          <Button colorScheme="orange" type="submit" ml={3}>
+          <Button
+            color="gray.800"
+            bg="orange.300"
+            _hover={{
+              bg: 'orange.400',
+            }}
+            type="submit"
+            ml={3}
+          >
             Editar
           </Button>
         </ModalFooter>
