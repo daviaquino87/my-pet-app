@@ -56,6 +56,7 @@ export function ExportDialog({ isOpen, onClose }: Props) {
     setIsLoading(true);
     const [startDate, endDate] = selectedDates;
     const datesParams = {
+      // TODO: create formatter utils function
       initialDate: format(endOfDay(startDate), 'yyyy-MM-dd 00:00:00'),
       finalDate: format(endOfDay(endDate), 'yyyy-MM-dd 23:59:59'),
     };
@@ -63,6 +64,7 @@ export function ExportDialog({ isOpen, onClose }: Props) {
     privateApi
       .get(EndpointsEnum.EXPORT_SPENDING, {
         params: datesParams,
+        responseType: 'arraybuffer',
       })
       .then((response) => {
         const blob = new Blob([response.data], { type: 'application/pdf' });
@@ -96,7 +98,7 @@ export function ExportDialog({ isOpen, onClose }: Props) {
               showOutsideDays: false,
               onDateSelected: handleOnDateSelected,
               selected: selectedDates,
-              monthsToDisplay: 2,
+              monthsToDisplay: 1,
             }}
             configs={chakraCalendarConfig}
           />
@@ -107,9 +109,13 @@ export function ExportDialog({ isOpen, onClose }: Props) {
             Cancaler
           </Button>
           <Button
-            colorScheme="orange"
             isLoading={isLoading}
             onClick={handleExport}
+            bg="orange.300"
+            color="gray.800"
+            _hover={{
+              bg: 'orange.400',
+            }}
           >
             Exportar
           </Button>

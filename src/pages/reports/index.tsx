@@ -207,7 +207,11 @@ export function ReportsPage() {
               </Table>
             </TableContainer>
             <HStack justifyContent="space-between">
-              <Button size="sm" onClick={onOpenExportDialog}>
+              <Button
+                size="sm"
+                colorScheme="telegram"
+                onClick={onOpenExportDialog}
+              >
                 Download
               </Button>
               <HStack>
