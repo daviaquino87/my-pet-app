@@ -1,19 +1,17 @@
-import { useMediaQuery } from '@chakra-ui/react';
-import LottiePlayer from 'lottie-react';
-import cat from '../../lottie/14592-loader-cat.json';
+import { Image, useMediaQuery } from '@chakra-ui/react';
+
 export function Logo() {
   const [canView] = useMediaQuery('(min-width: 425px)');
 
-  if (!canView) return null;
+  const size = canView ? 9 : 10;
 
   return (
-    <LottiePlayer
-      animationData={cat}
-      color="red"
-      style={{
-        height: 64,
-        width: 86,
-      }}
+    <Image
+      flexShrink={0}
+      w={size}
+      h={size}
+      transition="all 200ms"
+      src={process.env.PUBLIC_URL + '/logo-cat.png'}
     />
   );
 }
