@@ -35,6 +35,7 @@ export function ConfirmDeleteDialog({
       isOpen={isOpen}
       leastDestructiveRef={cancelRef}
       onClose={onClose}
+      isCentered
     >
       <AlertDialogOverlay>
         <AlertDialogContent>

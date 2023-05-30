@@ -37,7 +37,12 @@ export function EditDialog({ isOpen, onClose, price, date, onEdit }: Props) {
   };
 
   return (
-    <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
+    <Modal
+      isCentered
+      initialFocusRef={initialRef}
+      isOpen={isOpen}
+      onClose={onClose}
+    >
       <ModalOverlay />
       <ModalContent as="form" onSubmit={handleSubmit(submit)}>
         <ModalHeader>Editar despesa</ModalHeader>
