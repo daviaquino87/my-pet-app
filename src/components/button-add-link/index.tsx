@@ -1,6 +1,6 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { IconButton } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { ChakraProps, IconButton, Link, useMediaQuery } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
 
 interface Props {
   size?: 'sm' | 'md' | 'lg';
@@ -15,8 +15,17 @@ const btnSizes = {
 export function ButtonAddLink({ size = 'md' }: Props) {
   const btnSize = btnSizes[size];
 
+  const [canView] = useMediaQuery('(min-width: 425px)');
+
+  const styles = !canView
+    ? {
+        bottom: 100,
+        position: 'fixed',
+      }
+    : {};
+
   return (
-    <Link to="/new">
+    <Link as={RouterLink} to="/new" {...(styles as ChakraProps)}>
       <IconButton
         rounded="full"
         aria-label="Add spending"
