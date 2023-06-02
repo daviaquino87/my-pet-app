@@ -15,6 +15,8 @@ import { chakraCalendarConfig } from '../../constants/chakra-calendar-condig';
 import { endOfDay, format } from 'date-fns';
 import { privateApi } from '../../services/api';
 import { EndpointsEnum } from '../../enum/endpoints';
+import { AxiosError } from 'axios';
+import { useToast } from '../../hooks/use-toast';
 
 interface Props {
   isOpen: boolean;
@@ -27,6 +29,13 @@ export function ExportDialog({ isOpen, onClose }: Props) {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const toast = useToast();
+
+  const handleCloseDialog = () => {
+    setIsLoading(false);
+    onClose();
+  };
 
   const handleOnDateSelected: OnDateSelected = ({ selectable, date }) => {
     let newDates = [...selectedDates];
@@ -61,10 +70,27 @@ export function ExportDialog({ isOpen, onClose }: Props) {
       finalDate: format(endOfDay(endDate), 'yyyy-MM-dd 23:59:59'),
     };
 
+    // TODO: cancel timeout and isLoading false
+    // https://axios-http.com/docs/cancellation#cancel-token-code-deprecated-code
     privateApi
       .get(EndpointsEnum.EXPORT_SPENDING, {
         params: datesParams,
         responseType: 'arraybuffer',
+        transformResponse: (response: Uint8Array, headers) => {
+          if (
+            headers['content-type']?.toString().includes('application/json')
+          ) {
+            // no rows found, show toast error
+            let utf8decoder = new TextDecoder();
+            const json = JSON.parse(utf8decoder.decode(response)) as {
+              message: string;
+            };
+            return json;
+          }
+
+          // exist file to download
+          return response;
+        },
       })
       .then((response) => {
         const blob = new Blob([response.data], { type: 'application/pdf' });
@@ -81,12 +107,21 @@ export function ExportDialog({ isOpen, onClose }: Props) {
         window.URL.revokeObjectURL(blobUrl);
 
         document.body.removeChild(link);
+      })
+      .catch((error: AxiosError<{ message: string }>) => {
+        if (error.response?.data.message) {
+          toast.error({ title: error.response?.data.message });
+          return;
+        }
+        toast.error({ title: 'Erro desconhecido!' });
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };
 
   return (
-    <Modal isCentered isOpen={isOpen} onClose={onClose}>
+    <Modal isCentered isOpen={isOpen} onClose={handleCloseDialog}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Exportar relatório</ModalHeader>
@@ -105,7 +140,7 @@ export function ExportDialog({ isOpen, onClose }: Props) {
         </ModalBody>
 
         <ModalFooter>
-          <Button mr={3} onClick={onClose}>
+          <Button mr={3} onClick={handleCloseDialog}>
             Cancaler
           </Button>
           <Button
