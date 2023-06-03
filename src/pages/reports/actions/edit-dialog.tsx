@@ -41,33 +41,32 @@ export function EditDialog({ isOpen, onClose, price, date, onEdit }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(submit)}>
-      <Modal
-        initialFocusRef={initialRef}
-        isOpen={isOpen}
-        onClose={onClose}
-        size={modalSize}
-      >
-        <ModalOverlay />
-        {/* TODO: as form, remove animation of modal. Investigate */}
-        <ModalContent>
-          <ModalHeader>Editar despesa</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>Preço</FormLabel>
-              <Controller
-                control={control}
-                name="price"
-                defaultValue={Number(price)}
-                render={({ field }) => (
-                  <CustomCurrencyInput {...field} ref={initialRef} />
-                )}
-              />
-            </FormControl>
+    <Modal
+      initialFocusRef={initialRef}
+      isOpen={isOpen}
+      onClose={onClose}
+      size={modalSize}
+    >
+      <ModalOverlay />
+      {/* TODO: as form, remove animation of modal. Investigate */}
+      <ModalContent as="form" onSubmit={handleSubmit(submit)}>
+        <ModalHeader>Editar despesa</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody pb={6}>
+          <FormControl>
+            <FormLabel>Preço</FormLabel>
+            <Controller
+              control={control}
+              name="price"
+              defaultValue={Number(price)}
+              render={({ field }) => (
+                <CustomCurrencyInput {...field} ref={initialRef} />
+              )}
+            />
+          </FormControl>
 
-            {/* TODO: enable this when the API accept date */}
-            {/* <FormControl mt={4}>
+          {/* TODO: enable this when the API accept date */}
+          {/* <FormControl mt={4}>
             <FormLabel>Data</FormLabel>
             <Controller
               control={control}
@@ -76,24 +75,23 @@ export function EditDialog({ isOpen, onClose, price, date, onEdit }: Props) {
               render={({ field: { ref, ...state } }) => <Calendar {...state} />}
             />
           </FormControl> */}
-          </ModalBody>
+        </ModalBody>
 
-          <ModalFooter>
-            <Button onClick={onClose}>Cancelar</Button>
-            <Button
-              color="gray.800"
-              bg="orange.300"
-              _hover={{
-                bg: 'orange.400',
-              }}
-              type="submit"
-              ml={3}
-            >
-              Editar
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </form>
+        <ModalFooter>
+          <Button onClick={onClose}>Cancelar</Button>
+          <Button
+            color="gray.800"
+            bg="orange.300"
+            _hover={{
+              bg: 'orange.400',
+            }}
+            type="submit"
+            ml={3}
+          >
+            Editar
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 }
