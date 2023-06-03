@@ -3,9 +3,16 @@ import {
   Container,
   FormControl,
   FormErrorMessage,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Stack,
 } from '@chakra-ui/react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 
 import { Calendar } from '../../components/calendar';
 import { CustomCurrencyInput } from '../../components/input-currency';
@@ -13,6 +20,10 @@ import { PageTitle } from '../../components/page-title';
 import { useToast } from '../../hooks/use-toast';
 import { privateApi } from '../../services/api';
 import { EndpointsEnum } from '../../enum/endpoints';
+import { useIsMobile } from '../../hooks/use-is-mobile';
+import { format } from 'date-fns';
+import { useState } from 'react';
+import { CalendarIcon } from '@chakra-ui/icons';
 
 interface IFormState {
   price: string | number;
@@ -25,6 +36,7 @@ export function NewSpendingPage() {
     handleSubmit,
     reset,
     setError,
+    getValues,
     formState: { errors },
   } = useForm<IFormState>({
     defaultValues: {
@@ -34,6 +46,13 @@ export function NewSpendingPage() {
   });
 
   const toast = useToast();
+
+  const isMobile = useIsMobile();
+
+  // only for Mobile
+  const [showCalendarDialog, setShowCalendarDialog] = useState(false);
+
+  useWatch({ control });
 
   const submit = async (values: IFormState) => {
     if (!values.price) {
@@ -67,11 +86,65 @@ export function NewSpendingPage() {
             </FormControl>
           </Stack>
 
-          <Controller
-            control={control}
-            name="date"
-            render={({ field }) => <Calendar {...field} />}
-          />
+          {isMobile ? (
+            <Button
+              onClick={() => setShowCalendarDialog(true)}
+              rightIcon={
+                <CalendarIcon
+                  color="gray.600"
+                  _dark={{
+                    color: 'gray.500',
+                  }}
+                />
+              }
+            >
+              dia {format(new Date(getValues().date), 'dd')}
+            </Button>
+          ) : (
+            <Controller
+              control={control}
+              name="date"
+              render={({ field }) => <Calendar {...field} />}
+            />
+          )}
+
+          <Modal
+            isCentered
+            isOpen={showCalendarDialog}
+            onClose={() => setShowCalendarDialog(false)}
+            size="full"
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Selecionar data</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Controller
+                  control={control}
+                  name="date"
+                  render={({ field }) => (
+                    <Calendar key={String(showCalendarDialog)} {...field} />
+                  )}
+                />
+              </ModalBody>
+
+              <ModalFooter>
+                <Button mr={3} onClick={() => setShowCalendarDialog(false)}>
+                  Cancaler
+                </Button>
+                <Button
+                  bg="orange.300"
+                  color="gray.800"
+                  _hover={{
+                    bg: 'orange.400',
+                  }}
+                  onClick={() => setShowCalendarDialog(false)}
+                >
+                  Concluir
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
 
           <Button type="submit" colorScheme="green">
             Salvar
