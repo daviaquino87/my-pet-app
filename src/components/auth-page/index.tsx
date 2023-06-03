@@ -179,7 +179,7 @@ export function AuthPage({ type }: IAuthPageProps) {
               </FormControl>
 
               <FormControl isInvalid={!!errors.password?.message}>
-                <FormLabel>Senha</FormLabel>
+                <FormLabel htmlFor="auth-input-password">Senha</FormLabel>
                 <Input
                   type="password"
                   placeholder="Senha"
