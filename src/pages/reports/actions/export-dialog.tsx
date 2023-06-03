@@ -8,15 +8,17 @@ import {
   ModalCloseButton,
   Button,
 } from '@chakra-ui/react';
-import { subtractDays } from '../../utils/subtract-days';
 import { OnDateSelected, RangeCalendarPanel } from 'chakra-dayzed-datepicker';
 import { useState } from 'react';
-import { chakraCalendarConfig } from '../../constants/chakra-calendar-condig';
 import { endOfDay, format } from 'date-fns';
-import { privateApi } from '../../services/api';
-import { EndpointsEnum } from '../../enum/endpoints';
 import { AxiosError } from 'axios';
-import { useToast } from '../../hooks/use-toast';
+import { subtractDays } from '../../../utils/subtract-days';
+import { useIsMobile } from '../../../hooks/use-is-mobile';
+import { useToast } from '../../../hooks/use-toast';
+import { privateApi } from '../../../services/api';
+import { EndpointsEnum } from '../../../enum/endpoints';
+import { chakraCalendarConfig } from '../../../constants/chakra-calendar-condig';
+import { ModalSize } from '../../../types/modal-size';
 
 interface Props {
   isOpen: boolean;
@@ -29,6 +31,10 @@ export function ExportDialog({ isOpen, onClose }: Props) {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const isMobile = useIsMobile();
+
+  const modalSize: ModalSize = isMobile ? 'full' : 'md';
 
   const toast = useToast();
 
@@ -121,7 +127,12 @@ export function ExportDialog({ isOpen, onClose }: Props) {
   };
 
   return (
-    <Modal isCentered isOpen={isOpen} onClose={handleCloseDialog}>
+    <Modal
+      isCentered
+      isOpen={isOpen}
+      onClose={handleCloseDialog}
+      size={modalSize}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Exportar relatório</ModalHeader>

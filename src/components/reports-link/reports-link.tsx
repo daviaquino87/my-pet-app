@@ -23,7 +23,7 @@ export function ReportsLink() {
         borderColor="blue.100"
         rightIcon={<MdBarChart />}
       >
-        Reports
+        Relatório
       </Button>
     </Link>
   );

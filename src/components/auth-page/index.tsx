@@ -27,6 +27,14 @@ import {
   ILoginForm,
 } from './auth-page.types';
 
+const fieldRules = {
+  required: 'Campo obrigatório',
+  minLength: {
+    value: 6,
+    message: 'Nome deve ter pelo menos 6 caracteres',
+  },
+};
+
 export function AuthPage({ type }: IAuthPageProps) {
   const [searchParams] = useSearchParams();
   const {
@@ -87,18 +95,24 @@ export function AuthPage({ type }: IAuthPageProps) {
 
     if (type === 'register') {
       try {
+        const newValues = {
+          email: values.email,
+          password: values.password,
+          name: values.name,
+        };
+
+        await onRegister(newValues);
         setIsLoading(false);
       } catch (e) {
-        await onRegister(values);
-        setIsLoading(false);
-
         if (axios.isAxiosError<IResponseError>(e)) {
           toast.error({
             title: e.response?.data?.message,
           });
+          setIsLoading(false);
           return;
         }
         toast.error({ title: 'Erro ao se registrar' });
+        setIsLoading(false);
       }
     }
   };
@@ -138,7 +152,9 @@ export function AuthPage({ type }: IAuthPageProps) {
                   <Input
                     type="text"
                     placeholder="Nome"
-                    {...register('name', { required: 'Campo obrigatório' })}
+                    {...register('name', {
+                      ...fieldRules,
+                    })}
                   />
                   <Flex h="30px" alignItems="center">
                     <FormErrorMessage m={0}>
@@ -167,7 +183,9 @@ export function AuthPage({ type }: IAuthPageProps) {
                 <Input
                   type="password"
                   placeholder="Senha"
-                  {...register('password', { required: 'Campo obrigatório' })}
+                  {...register('password', {
+                    ...fieldRules,
+                  })}
                   id="auth-input-password"
                 />
                 <Flex h="30px" alignItems="center">
