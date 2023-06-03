@@ -8,6 +8,8 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  InputGroup,
+  InputRightElement,
   Stack,
 } from '@chakra-ui/react';
 import axios from 'axios';
@@ -21,6 +23,8 @@ import { useToast } from '../../hooks/use-toast';
 import lottieCat from '../../lottie/65619-happy-cat.json';
 import { IResponseError } from '../../types/response/login';
 import { useAuthPageInfo } from './auth-page-hook';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+
 import {
   AuthPageFormType,
   IAuthPageProps,
@@ -55,6 +59,10 @@ export function AuthPage({ type }: IAuthPageProps) {
   const { btnText, isLoginPage } = useAuthPageInfo(type);
 
   const toast = useToast();
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePassword = () => setShowPassword(!showPassword);
 
   const dispatch = useAuthDispatch();
 
@@ -180,14 +188,22 @@ export function AuthPage({ type }: IAuthPageProps) {
 
               <FormControl isInvalid={!!errors.password?.message}>
                 <FormLabel htmlFor="auth-input-password">Senha</FormLabel>
-                <Input
-                  type="password"
-                  placeholder="Senha"
-                  {...register('password', {
-                    ...fieldRules,
-                  })}
-                  id="auth-input-password"
-                />
+                <InputGroup>
+                  <Input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Senha"
+                    {...register('password', {
+                      ...fieldRules,
+                    })}
+                    id="auth-input-password"
+                  />
+                  <InputRightElement w="4" mr={4}>
+                    <Button h="1.75rem" size="sm" onClick={togglePassword}>
+                      {showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+
                 <Flex h="30px" alignItems="center">
                   <FormErrorMessage m={0}>
                     {errors.password?.message}
