@@ -30,7 +30,12 @@ export const CustomCurrencyInput = forwardRef(
         }}
         value={value}
         InputElement={
-          <Input size={inputSize} autoComplete="off" placeholder="R$ Valor" />
+          <Input
+            size={inputSize}
+            ref={ref}
+            autoComplete="off"
+            placeholder="R$ Valor"
+          />
         }
         currency="BRL"
       />
