@@ -17,6 +17,8 @@ export const CustomCurrencyInput = forwardRef(
 
     const inputSize: InputProps['size'] = isMobile ? 'lg' : 'md';
 
+    console.log('CustomCurrencyInput', { value });
+
     return (
       <CurrencyInput
         {...props}
