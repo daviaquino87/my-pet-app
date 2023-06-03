@@ -19,6 +19,7 @@ import { privateApi } from '../../../services/api';
 import { EndpointsEnum } from '../../../enum/endpoints';
 import { chakraCalendarConfig } from '../../../constants/chakra-calendar-condig';
 import { ModalSize } from '../../../types/modal-size';
+import './export-dialog.css';
 
 interface Props {
   isOpen: boolean;
@@ -66,6 +67,8 @@ export function ExportDialog({ isOpen, onClose }: Props) {
       setSelectedDates(newDates);
     }
   };
+
+  const isInvalidDatesField = selectedDates.length !== 2;
 
   const handleExport = async () => {
     setIsLoading(true);
@@ -162,6 +165,7 @@ export function ExportDialog({ isOpen, onClose }: Props) {
             _hover={{
               bg: 'orange.400',
             }}
+            isDisabled={isInvalidDatesField}
           >
             Exportar
           </Button>
