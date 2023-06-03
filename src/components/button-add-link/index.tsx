@@ -1,6 +1,7 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { ChakraProps, IconButton, Link, useMediaQuery } from '@chakra-ui/react';
+import { ChakraProps, IconButton, Link } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
+import { useIsMobile } from '../../hooks/use-is-mobile';
 
 interface Props {
   size?: 'sm' | 'md' | 'lg';
@@ -15,9 +16,9 @@ const btnSizes = {
 export function ButtonAddLink({ size = 'md' }: Props) {
   const btnSize = btnSizes[size];
 
-  const [canView] = useMediaQuery('(min-width: 425px)');
+  const isMobile = useIsMobile();
 
-  const styles = !canView
+  const styles = isMobile
     ? {
         bottom: 100,
         position: 'fixed',

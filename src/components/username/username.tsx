@@ -1,11 +1,12 @@
-import { Text, useMediaQuery } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import { useUser } from '../../context/user-context';
+import { useIsMobile } from '../../hooks/use-is-mobile';
 
 export function Username() {
   const { user } = useUser();
-  const [canView] = useMediaQuery('(min-width: 425px)');
+  const isMobile = useIsMobile();
 
-  if (!canView) return null;
+  if (isMobile) return null;
 
   return (
     <Text fontWeight="medium" fontSize={18}>

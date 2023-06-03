@@ -1,10 +1,11 @@
-import { Image, useMediaQuery } from '@chakra-ui/react';
+import { Image } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { useIsMobile } from '../../hooks/use-is-mobile';
 
 export function Logo() {
-  const [canView] = useMediaQuery('(min-width: 425px)');
+  const isMobile = useIsMobile();
 
-  const size = canView ? 9 : 10;
+  const size = isMobile ? 9 : 10;
 
   return (
     <Link to="/">

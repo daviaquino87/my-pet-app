@@ -8,6 +8,8 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { useRef } from 'react';
+import { useIsMobile } from '../../../hooks/use-is-mobile';
+import { ModalSize } from '../../../types/modal-size';
 
 interface Props {
   isOpen: boolean;
@@ -30,12 +32,17 @@ export function ConfirmDeleteDialog({
 }: Props) {
   const cancelRef = useRef(null);
 
+  const isMobile = useIsMobile();
+
+  const modalSize: ModalSize = isMobile ? 'full' : 'md';
+
   return (
     <AlertDialog
       isOpen={isOpen}
       leastDestructiveRef={cancelRef}
       onClose={onClose}
       isCentered
+      size={modalSize}
     >
       <AlertDialogOverlay>
         <AlertDialogContent>

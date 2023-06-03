@@ -25,14 +25,14 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { useState } from 'react';
-import { ConfirmDeleteDialog } from '../../components/confirm-delete-dialog';
+import { ConfirmDeleteDialog } from './actions/delete-dialog';
 import { PageTitle } from '../../components/page-title';
 import { EndpointsEnum } from '../../enum/endpoints';
 import { privateApi } from '../../services/api';
 import { ISpending, ISpendingResponse } from '../../types/spending';
 import { currency } from '../../utils/currency';
-import { EditDialog, SpendingBaseType } from './edit-dialog';
-import { ExportDialog } from './export-dialog';
+import { EditDialog, SpendingBaseType } from './actions/edit-dialog';
+import { ExportDialog } from './actions/export-dialog';
 
 async function fetchReports(page = 1): Promise<ISpendingResponse> {
   const params = { page };
@@ -183,7 +183,7 @@ export function ReportsPage() {
         ) : (
           <>
             <TableContainer>
-              <Table size="sm">
+              <Table>
                 <Thead>
                   <Tr>
                     <Th>Data</Th>
@@ -207,16 +207,11 @@ export function ReportsPage() {
               </Table>
             </TableContainer>
             <HStack justifyContent="space-between">
-              <Button
-                size="sm"
-                colorScheme="telegram"
-                onClick={onOpenExportDialog}
-              >
+              <Button colorScheme="telegram" onClick={onOpenExportDialog}>
                 Download
               </Button>
               <HStack>
                 <Button
-                  size="sm"
                   leftIcon={<ArrowLeftIcon fontSize={10} />}
                   onClick={handlePrevious}
                   isDisabled={isPreviousDisabled}
@@ -224,7 +219,6 @@ export function ReportsPage() {
                   Anterior
                 </Button>
                 <Button
-                  size="sm"
                   rightIcon={<ArrowRightIcon fontSize={10} />}
                   onClick={handleNext}
                   isDisabled={isNextDisabled}

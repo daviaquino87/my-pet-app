@@ -11,9 +11,12 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react';
 import { useRef } from 'react';
-import { CustomCurrencyInput } from '../../components/input-currency';
 import { Controller, useForm } from 'react-hook-form';
-import { ISpending } from '../../types/spending';
+import './export-dialog.css';
+import { ISpending } from '../../../types/spending';
+import { useIsMobile } from '../../../hooks/use-is-mobile';
+import { CustomCurrencyInput } from '../../../components/input-currency';
+import { ModalSize } from '../../../types/modal-size';
 
 export type SpendingBaseType = Pick<ISpending, 'id' | 'price'>;
 
@@ -32,18 +35,23 @@ export function EditDialog({ isOpen, onClose, price, date, onEdit }: Props) {
     mode: 'onChange',
   });
 
+  const isMobile = useIsMobile();
+
+  const modalSize: ModalSize = isMobile ? 'full' : 'md';
+
   const submit = (values: SpendingBaseType) => {
     onEdit(values);
   };
 
   return (
     <Modal
-      isCentered
       initialFocusRef={initialRef}
       isOpen={isOpen}
       onClose={onClose}
+      size={modalSize}
     >
       <ModalOverlay />
+      {/* TODO: as form, remove animation of modal. Investigate */}
       <ModalContent as="form" onSubmit={handleSubmit(submit)}>
         <ModalHeader>Editar despesa</ModalHeader>
         <ModalCloseButton />
@@ -54,7 +62,9 @@ export function EditDialog({ isOpen, onClose, price, date, onEdit }: Props) {
               control={control}
               name="price"
               defaultValue={Number(price)}
-              render={({ field }) => <CustomCurrencyInput {...field} />}
+              render={({ field }) => (
+                <CustomCurrencyInput {...field} ref={initialRef} />
+              )}
             />
           </FormControl>
 
