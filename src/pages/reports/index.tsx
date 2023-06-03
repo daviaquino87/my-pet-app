@@ -101,9 +101,8 @@ export function ReportsPage() {
     null
   );
 
-  const [selectedSpending, setSelectedSpending] = useState<null | ISpending>(
-    null
-  );
+  const [selectedSpending, setSelectedSpending] =
+    useState<null | EditSpendingType>(null);
 
   const {
     isOpen: isExportDialogOpen,
@@ -145,6 +144,10 @@ export function ReportsPage() {
 
   const handleOpenConfirm = (id: string) => {
     setSelectedSpendingId(id);
+  };
+
+  const handleOpenEdit = ({ id, price, date }: EditSpendingType) => {
+    setSelectedSpending({ id, price, date });
   };
 
   const handleConfirm = () => {
@@ -199,7 +202,7 @@ export function ReportsPage() {
                       date={item.date}
                       price={item.price}
                       onOpenConfirmDelete={handleOpenConfirm}
-                      onOpenEdit={() => setSelectedSpending(item)}
+                      onOpenEdit={handleOpenEdit}
                       isEditing={Boolean(selectedSpending)}
                     />
                   ))}
