@@ -110,6 +110,12 @@ export function ReportsPage() {
     onClose: onCloseExportDialog,
   } = useDisclosure();
 
+  const {
+    isOpen: isEditDialogOpen,
+    onOpen: onOpenEditDialog,
+    onClose: onCloseEditDialog,
+  } = useDisclosure();
+
   const [page, setPage] = useState(1);
 
   const { data, isLoading } = useQuery(
@@ -122,15 +128,18 @@ export function ReportsPage() {
 
   const queryClient = useQueryClient();
 
-  const removeMutation = useMutation({
-    mutationFn: async (id: string) => {
-      return privateApi.delete(`${EndpointsEnum.DELETE_SPENDING}/${id}`);
-    },
-    onSuccess: () => {
-      setSelectedSpendingId(null);
-      queryClient.invalidateQueries(['reports']);
-    },
-  });
+  const { isLoading: isLoadingRemove, mutate: handleRemoveSpending } =
+    useMutation(
+      async (id: string) => {
+        return privateApi.delete(`${EndpointsEnum.DELETE_SPENDING}/${id}`);
+      },
+      {
+        onSuccess: () => {
+          setSelectedSpendingId(null);
+          queryClient.invalidateQueries(['reports']);
+        },
+      }
+    );
 
   const handleCloseConfirm = () => {
     setSelectedSpendingId(null);
@@ -138,7 +147,7 @@ export function ReportsPage() {
 
   const handleRemove = () => {
     if (selectedSpendingId) {
-      removeMutation.mutate(selectedSpendingId);
+      handleRemoveSpending(selectedSpendingId);
     }
   };
 
@@ -148,6 +157,12 @@ export function ReportsPage() {
 
   const handleOpenEdit = ({ id, price, date }: EditSpendingType) => {
     setSelectedSpending({ id, price, date });
+    onOpenEditDialog();
+  };
+
+  const handleOnCloseEdit = () => {
+    onCloseEditDialog();
+    setSelectedSpending(null);
   };
 
   const handleConfirm = () => {
@@ -162,14 +177,23 @@ export function ReportsPage() {
     setPage((prev) => prev + 1);
   };
 
-  const handleEdit = async (values: SpendingBaseType) => {
-    await privateApi.put(
-      `${EndpointsEnum.UPDATE_SPENDING}/${selectedSpending?.id}`,
-      values
-    );
-    setSelectedSpending(null);
-    queryClient.invalidateQueries(['reports']);
-  };
+  const { isLoading: isLoadingEdit, mutate: handleEditSpending } = useMutation(
+    async ({ id, price }: Omit<SpendingBaseType, 'date'>) =>
+      await privateApi.put(
+        `${EndpointsEnum.UPDATE_SPENDING}/${selectedSpending?.id}`,
+        {
+          id,
+          // TODO: remove this Number, always be number
+          price: Number(price),
+        }
+      ),
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(['reports']);
+        handleOnCloseEdit();
+      },
+    }
+  );
 
   const isPreviousDisabled = page === 1;
   const isNextDisabled = data?.spendings.length !== 10;
@@ -239,15 +263,16 @@ export function ReportsPage() {
         onOK={handleConfirm}
         title="Remover despesa"
         description="Você tem certeza que deseja remover?"
+        isLoading={isLoadingRemove}
       />
 
       <EditDialog
-        key={selectedSpending?.id}
-        isOpen={!!selectedSpending}
-        onClose={() => setSelectedSpending(null)}
+        isOpen={isEditDialogOpen}
+        onClose={handleOnCloseEdit}
         price={String(selectedSpending?.price)}
-        date={String(selectedSpending?.date)}
-        onEdit={handleEdit}
+        onEdit={handleEditSpending}
+        isLoading={isLoadingEdit}
+        id={String(selectedSpending?.id)}
       />
 
       <ExportDialog isOpen={isExportDialogOpen} onClose={onCloseExportDialog} />
