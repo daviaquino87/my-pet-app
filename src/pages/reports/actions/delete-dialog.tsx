@@ -19,6 +19,7 @@ interface Props {
   description: string;
   cancelText?: string;
   okText?: string;
+  isLoading: boolean;
 }
 
 export function ConfirmDeleteDialog({
@@ -29,6 +30,7 @@ export function ConfirmDeleteDialog({
   description,
   cancelText = 'Cancelar',
   okText = 'Remover',
+  isLoading,
 }: Props) {
   const cancelRef = useRef(null);
 
@@ -56,7 +58,12 @@ export function ConfirmDeleteDialog({
             <Button ref={cancelRef} onClick={onClose}>
               {cancelText}
             </Button>
-            <Button colorScheme="red" onClick={onOK} ml={3}>
+            <Button
+              colorScheme="red"
+              onClick={onOK}
+              ml={3}
+              isLoading={isLoading}
+            >
               {okText}
             </Button>
           </AlertDialogFooter>
