@@ -10,12 +10,11 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import { useRef } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { ISpending } from '../../../types/spending';
+import { useEffect, useRef, useState } from 'react';
+import { CustomCurrencyInput } from '../../../components/input-currency';
 import { useIsMobile } from '../../../hooks/use-is-mobile';
 import { ModalSize } from '../../../types/modal-size';
-import { CustomCurrencyInput } from '../../../components/input-currency';
+import { ISpending } from '../../../types/spending';
 
 export type SpendingBaseType = Pick<ISpending, 'id' | 'price'>;
 
@@ -23,22 +22,36 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   price: string | number;
-  date: string;
   onEdit: (values: SpendingBaseType) => void;
+  id: string;
+  isLoading: boolean;
 }
 
-export function EditDialog({ isOpen, onClose, price, date, onEdit }: Props) {
+export function EditDialog({
+  isOpen,
+  isLoading,
+  id,
+  price,
+  onEdit,
+  onClose,
+}: Props) {
   const initialRef = useRef<HTMLInputElement>(null);
 
-  const { control, handleSubmit } = useForm<SpendingBaseType>();
+  const [editPrice, setEditPrice] = useState<string | number>(0);
 
   const isMobile = useIsMobile();
 
   const modalSize: ModalSize = isMobile ? 'full' : 'md';
 
-  const submit = (values: SpendingBaseType) => {
-    onEdit(values);
+  const handleEdit = () => {
+    onEdit({ id, price: editPrice });
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      setEditPrice(price);
+    }
+  }, [isOpen, price]);
 
   return (
     <Modal
@@ -49,32 +62,18 @@ export function EditDialog({ isOpen, onClose, price, date, onEdit }: Props) {
     >
       <ModalOverlay />
       {/* TODO: as form, remove animation of modal. Investigate */}
-      <ModalContent as="form" onSubmit={handleSubmit(submit)}>
+      <ModalContent>
         <ModalHeader>Editar despesa</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
           <FormControl>
             <FormLabel>Preço</FormLabel>
-            <Controller
-              control={control}
-              name="price"
-              defaultValue={Number(price)}
-              render={({ field }) => (
-                <CustomCurrencyInput {...field} ref={initialRef} />
-              )}
+            <CustomCurrencyInput
+              value={editPrice}
+              onChange={(newValue) => setEditPrice(newValue)}
+              ref={initialRef}
             />
           </FormControl>
-
-          {/* TODO: enable this when the API accept date */}
-          {/* <FormControl mt={4}>
-            <FormLabel>Data</FormLabel>
-            <Controller
-              control={control}
-              name="date"
-              defaultValue={date}
-              render={({ field: { ref, ...state } }) => <Calendar {...state} />}
-            />
-          </FormControl> */}
         </ModalBody>
 
         <ModalFooter>
@@ -87,6 +86,8 @@ export function EditDialog({ isOpen, onClose, price, date, onEdit }: Props) {
             }}
             type="submit"
             ml={3}
+            onClick={handleEdit}
+            isLoading={isLoading}
           >
             Editar
           </Button>
