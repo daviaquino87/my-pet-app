@@ -155,7 +155,7 @@ export function ExportDialog({ isOpen, onClose }: Props) {
 
         <ModalFooter>
           <Button mr={3} onClick={handleCloseDialog}>
-            Cancaler
+            Cancelar
           </Button>
           <Button
             isLoading={isLoading}
