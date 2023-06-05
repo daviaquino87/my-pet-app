@@ -130,7 +130,7 @@ export function NewSpendingPage() {
 
               <ModalFooter>
                 <Button mr={3} onClick={() => setShowCalendarDialog(false)}>
-                  Cancaler
+                  Cancelar
                 </Button>
                 <Button
                   bg="orange.300"
