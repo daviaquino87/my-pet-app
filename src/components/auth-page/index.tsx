@@ -163,9 +163,10 @@ export function AuthPage({ type }: IAuthPageProps) {
                     {...register('name', {
                       ...fieldRules,
                     })}
+                    data-testid="auth-form-name-field"
                   />
                   <Flex h="30px" alignItems="center">
-                    <FormErrorMessage m={0}>
+                    <FormErrorMessage m={0} data-testid="form-error-name">
                       {errors.name?.message}
                     </FormErrorMessage>
                   </Flex>
@@ -178,9 +179,10 @@ export function AuthPage({ type }: IAuthPageProps) {
                   type="email"
                   placeholder="E-mail"
                   {...register('email', { required: 'Campo obrigatório' })}
+                  data-testid="auth-form-email-field"
                 />
                 <Flex h="30px" alignItems="center">
-                  <FormErrorMessage m={0}>
+                  <FormErrorMessage m={0} data-testid="form-error-email">
                     {errors.email?.message}
                   </FormErrorMessage>
                 </Flex>
@@ -196,6 +198,7 @@ export function AuthPage({ type }: IAuthPageProps) {
                       ...fieldRules,
                     })}
                     id="auth-input-password"
+                    data-testid="auth-form-password-field"
                   />
                   <InputRightElement w="4" mr={4}>
                     <Button h="1.75rem" size="sm" onClick={togglePassword}>
@@ -205,7 +208,7 @@ export function AuthPage({ type }: IAuthPageProps) {
                 </InputGroup>
 
                 <Flex h="30px" alignItems="center">
-                  <FormErrorMessage m={0}>
+                  <FormErrorMessage m={0} data-testid="form-error-password">
                     {errors.password?.message}
                   </FormErrorMessage>
                 </Flex>
