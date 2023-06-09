@@ -1,6 +1,6 @@
-import { IconButton, Tooltip } from '@chakra-ui/react';
-import { MdLogout } from 'react-icons/md';
-import { useUserDispatch } from '../../context/user-context';
+import { IconButton, Tooltip } from "@chakra-ui/react";
+import { MdLogout } from "react-icons/md";
+import { useUserDispatch } from "../../context/user-context";
 
 export function Logout() {
   const dispatch = useUserDispatch();
@@ -17,8 +17,8 @@ export function Logout() {
         icon={<MdLogout size="1rem" />}
         aria-label="Logout"
         _hover={{
-          bg: 'red.100',
-          color: 'red.500',
+          bg: "red.100",
+          color: "red.500",
         }}
       />
     </Tooltip>

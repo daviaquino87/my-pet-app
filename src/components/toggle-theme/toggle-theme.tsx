@@ -1,11 +1,11 @@
-import { MoonIcon, SunIcon } from '@chakra-ui/icons';
-import { IconButton, SlideFade, useColorMode } from '@chakra-ui/react';
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { IconButton, SlideFade, useColorMode } from "@chakra-ui/react";
 
 function InternIcon() {
   const { colorMode } = useColorMode();
 
-  const isLight = colorMode === 'light';
-  const isDark = colorMode === 'dark';
+  const isLight = colorMode === "light";
+  const isDark = colorMode === "dark";
 
   const icon = {
     light: <MoonIcon />,
@@ -16,7 +16,7 @@ function InternIcon() {
     <>
       <SlideFade
         style={{
-          position: 'absolute',
+          position: "absolute",
         }}
         in={isLight}
         offsetY="-20px"
@@ -25,7 +25,7 @@ function InternIcon() {
       </SlideFade>
       <SlideFade
         style={{
-          position: 'absolute',
+          position: "absolute",
         }}
         in={isDark}
         offsetY="-20px"

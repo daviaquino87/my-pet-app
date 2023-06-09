@@ -1,11 +1,11 @@
-import { Flex } from '@chakra-ui/react';
-import { Outlet } from 'react-router-dom';
-import { HeaderApp } from '../components/header';
-import { Logo } from '../components/logo/logo';
-import { Username } from '../components/username/username';
-import { ToggleTheme } from '../components/toggle-theme/toggle-theme';
-import { ReportsLink } from '../components/reports-link/reports-link';
-import { Logout } from '../components/logout/logout';
+import { Flex } from "@chakra-ui/react";
+import { Outlet } from "react-router-dom";
+import { HeaderApp } from "../components/header";
+import { Logo } from "../components/logo/logo";
+import { Username } from "../components/username/username";
+import { ToggleTheme } from "../components/toggle-theme/toggle-theme";
+import { ReportsLink } from "../components/reports-link/reports-link";
+import { Logout } from "../components/logout/logout";
 
 export function LayoutPage() {
   return (

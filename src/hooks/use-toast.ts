@@ -1,4 +1,4 @@
-import { UseToastOptions, useToast as useToastUI } from '@chakra-ui/react';
+import { UseToastOptions, useToast as useToastUI } from "@chakra-ui/react";
 
 const TOAST_DURATION = 1400;
 
@@ -8,7 +8,7 @@ export function useToast() {
     toastUI({
       ...options,
       title,
-      status: 'success',
+      status: "success",
       duration: TOAST_DURATION,
     });
   };
@@ -17,7 +17,7 @@ export function useToast() {
     toastUI({
       ...options,
       title,
-      status: 'error',
+      status: "error",
       duration: TOAST_DURATION,
     });
   };

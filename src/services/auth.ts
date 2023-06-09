@@ -1,10 +1,10 @@
 import {
   ILoginForm,
   IRegisterForm,
-} from '../components/auth-page/auth-page.types';
-import { EndpointsEnum } from '../enum/endpoints';
-import { ILoginResponse } from '../types/response/login';
-import { api } from './api';
+} from "../components/auth-page/auth-page.types";
+import { EndpointsEnum } from "../enum/endpoints";
+import { ILoginResponse } from "../types/response/login";
+import { api } from "./api";
 
 export const authPageServices = {
   login: async (data: ILoginForm): Promise<ILoginResponse> => {

@@ -1,4 +1,4 @@
-import { Flex, Spinner } from '@chakra-ui/react';
+import { Flex, Spinner } from "@chakra-ui/react";
 import {
   Dispatch,
   SetStateAction,
@@ -6,9 +6,9 @@ import {
   useContext,
   useEffect,
   useState,
-} from 'react';
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { IAuthContext } from './auth-context';
+} from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { IAuthContext } from "./auth-context";
 
 const UserContext = createContext<IAuthContext | null>(null);
 
@@ -21,7 +21,7 @@ export function UserProvider() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const userData = localStorage.getItem('@data');
+    const userData = localStorage.getItem("@data");
     if (userData) {
       setLoading(false);
       setUser(JSON.parse(userData));
@@ -44,7 +44,7 @@ export function UserProvider() {
   }
 
   // TODO: this is a bad practice
-  const [, jwtData] = user?.token.split('.');
+  const [, jwtData] = user?.token.split(".");
   const tokenData = JSON.parse(window.atob(jwtData));
 
   const now = Math.round(Date.now() / 1000);
@@ -53,9 +53,9 @@ export function UserProvider() {
     return (
       <Navigate
         to={{
-          pathname: '/login',
+          pathname: "/login",
           // TODO: use state
-          search: 'redirectTo=' + pathname,
+          search: "redirectTo=" + pathname,
         }}
         replace
       />
@@ -74,7 +74,7 @@ export function UserProvider() {
 export function useUser() {
   const context = useContext(UserContext);
   if (!context) {
-    throw new Error('useUser must be used within a UserProvider');
+    throw new Error("useUser must be used within a UserProvider");
   }
   return context;
 }
@@ -82,7 +82,7 @@ export function useUser() {
 export function useUserDispatch() {
   const context = useContext(UserDispatchContext);
   if (!context) {
-    throw new Error('useUserDispatch must be used within a UserProvider');
+    throw new Error("useUserDispatch must be used within a UserProvider");
   }
   return context;
 }

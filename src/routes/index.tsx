@@ -1,11 +1,11 @@
-import { Route, Routes } from 'react-router-dom';
-import { LoginPage } from '../pages/auth/login';
-import { RegisterPage } from '../pages/auth/register';
-import { HomePage } from '../pages/home';
-import { UserProvider } from '../context/user-context';
-import { NewSpendingPage } from '../pages/new';
-import { LayoutPage } from '../pages/layout';
-import { ReportsPage } from '../pages/reports';
+import { Route, Routes } from "react-router-dom";
+import { LoginPage } from "../pages/auth/login";
+import { RegisterPage } from "../pages/auth/register";
+import { HomePage } from "../pages/home";
+import { UserProvider } from "../context/user-context";
+import { NewSpendingPage } from "../pages/new";
+import { LayoutPage } from "../pages/layout";
+import { ReportsPage } from "../pages/reports";
 
 export function Router() {
   return (

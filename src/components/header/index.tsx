@@ -1,5 +1,5 @@
-import { Flex } from '@chakra-ui/react';
-import { ReactNode } from 'react';
+import { Flex } from "@chakra-ui/react";
+import { ReactNode } from "react";
 
 interface Props {
   logo: ReactNode;
@@ -18,7 +18,7 @@ export function HeaderApp({ logo, user, actions }: Props) {
       borderBottom="1px"
       borderBottomColor="gray.200"
       _dark={{
-        borderBottomColor: 'gray.700',
+        borderBottomColor: "gray.700",
       }}
     >
       <Flex alignItems="center" gap={4}>

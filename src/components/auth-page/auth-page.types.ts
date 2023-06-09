@@ -1,4 +1,4 @@
-import { AuthPageTypeEnum } from './auth-page.enum';
+import { AuthPageTypeEnum } from "./auth-page.enum";
 
 export interface ILoginForm {
   email: string;

@@ -11,19 +11,19 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-} from '@chakra-ui/react';
-import { Controller, useForm, useWatch } from 'react-hook-form';
+} from "@chakra-ui/react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 
-import { Calendar } from '../../components/calendar';
-import { CustomCurrencyInput } from '../../components/input-currency';
-import { PageTitle } from '../../components/page-title';
-import { useToast } from '../../hooks/use-toast';
-import { privateApi } from '../../services/api';
-import { EndpointsEnum } from '../../enum/endpoints';
-import { useIsMobile } from '../../hooks/use-is-mobile';
-import { format } from 'date-fns';
-import { useState } from 'react';
-import { CalendarIcon } from '@chakra-ui/icons';
+import { Calendar } from "../../components/calendar";
+import { CustomCurrencyInput } from "../../components/input-currency";
+import { PageTitle } from "../../components/page-title";
+import { useToast } from "../../hooks/use-toast";
+import { privateApi } from "../../services/api";
+import { EndpointsEnum } from "../../enum/endpoints";
+import { useIsMobile } from "../../hooks/use-is-mobile";
+import { format } from "date-fns";
+import { useState } from "react";
+import { CalendarIcon } from "@chakra-ui/icons";
 
 interface IFormState {
   price: string | number;
@@ -40,7 +40,7 @@ export function NewSpendingPage() {
     formState: { errors },
   } = useForm<IFormState>({
     defaultValues: {
-      price: '',
+      price: "",
       date: new Date(),
     },
   });
@@ -56,7 +56,7 @@ export function NewSpendingPage() {
 
   const submit = async (values: IFormState) => {
     if (!values.price) {
-      setError('price', { message: 'Insira um valor válido' });
+      setError("price", { message: "Insira um valor válido" });
       return;
     }
 
@@ -64,7 +64,7 @@ export function NewSpendingPage() {
 
     reset();
 
-    toast.success({ title: 'Criado com sucesso' });
+    toast.success({ title: "Criado com sucesso" });
   };
 
   return (
@@ -78,7 +78,7 @@ export function NewSpendingPage() {
                 control={control}
                 name="price"
                 rules={{
-                  required: 'Campo obrigatório',
+                  required: "Campo obrigatório",
                 }}
                 render={({ field }) => <CustomCurrencyInput {...field} />}
               />
@@ -93,12 +93,12 @@ export function NewSpendingPage() {
                 <CalendarIcon
                   color="gray.600"
                   _dark={{
-                    color: 'gray.500',
+                    color: "gray.500",
                   }}
                 />
               }
             >
-              dia {format(new Date(getValues().date), 'dd')}
+              dia {format(new Date(getValues().date), "dd")}
             </Button>
           ) : (
             <Controller
@@ -136,7 +136,7 @@ export function NewSpendingPage() {
                   bg="orange.300"
                   color="gray.800"
                   _hover={{
-                    bg: 'orange.400',
+                    bg: "orange.400",
                   }}
                   onClick={() => setShowCalendarDialog(false)}
                 >

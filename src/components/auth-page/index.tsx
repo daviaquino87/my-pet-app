@@ -11,31 +11,31 @@ import {
   InputGroup,
   InputRightElement,
   Stack,
-} from '@chakra-ui/react';
-import axios from 'axios';
-import LottiePlayer from 'lottie-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Link, useSearchParams } from 'react-router-dom';
-import { useAuthDispatch } from '../../context/auth-context';
-import { useAuthPage } from '../../hooks/use-auth-page';
-import { useToast } from '../../hooks/use-toast';
-import lottieCat from '../../lottie/65619-happy-cat.json';
-import { IResponseError } from '../../types/response/login';
-import { useAuthPageInfo } from './auth-page-hook';
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+} from "@chakra-ui/react";
+import axios from "axios";
+import LottiePlayer from "lottie-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useSearchParams } from "react-router-dom";
+import { useAuthDispatch } from "../../context/auth-context";
+import { useAuthPage } from "../../hooks/use-auth-page";
+import { useToast } from "../../hooks/use-toast";
+import lottieCat from "../../lottie/65619-happy-cat.json";
+import { IResponseError } from "../../types/response/login";
+import { useAuthPageInfo } from "./auth-page-hook";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 import {
   AuthPageFormType,
   IAuthPageProps,
   ILoginForm,
-} from './auth-page.types';
+} from "./auth-page.types";
 
 const fieldRules = {
-  required: 'Campo obrigatório',
+  required: "Campo obrigatório",
   minLength: {
     value: 6,
-    message: 'Nome deve ter pelo menos 6 caracteres',
+    message: "Nome deve ter pelo menos 6 caracteres",
   },
 };
 
@@ -48,9 +48,9 @@ export function AuthPage({ type }: IAuthPageProps) {
     formState: { errors },
   } = useForm<AuthPageFormType>({
     defaultValues: {
-      email: searchParams.get('email') || '',
-      password: '',
-      name: '',
+      email: searchParams.get("email") || "",
+      password: "",
+      name: "",
     },
   });
 
@@ -70,7 +70,7 @@ export function AuthPage({ type }: IAuthPageProps) {
 
   const submit = async (values: ILoginForm) => {
     setIsLoading(true);
-    if (type === 'login') {
+    if (type === "login") {
       const newValues = {
         email: values.email,
         password: values.password,
@@ -80,28 +80,28 @@ export function AuthPage({ type }: IAuthPageProps) {
         const { token, user } = await onLogin(newValues);
 
         dispatch({ token, user });
-        localStorage.setItem('@data', JSON.stringify({ token, user }));
+        localStorage.setItem("@data", JSON.stringify({ token, user }));
         setIsLoading(false);
       } catch (e) {
         setIsLoading(false);
 
         if (axios.isAxiosError<IResponseError>(e)) {
           toast.error({ title: e.response?.data?.message });
-          setFocus('password');
+          setFocus("password");
           handleSelectPasswordInput();
 
           return;
         }
-        setFocus('password');
+        setFocus("password");
         handleSelectPasswordInput();
 
-        toast.error({ title: 'Credenciais inválidas' });
+        toast.error({ title: "Credenciais inválidas" });
       }
 
       return;
     }
 
-    if (type === 'register') {
+    if (type === "register") {
       try {
         const newValues = {
           email: values.email,
@@ -119,7 +119,7 @@ export function AuthPage({ type }: IAuthPageProps) {
           setIsLoading(false);
           return;
         }
-        toast.error({ title: 'Erro ao se registrar' });
+        toast.error({ title: "Erro ao se registrar" });
         setIsLoading(false);
       }
     }
@@ -127,7 +127,7 @@ export function AuthPage({ type }: IAuthPageProps) {
 
   const handleSelectPasswordInput = () => {
     (
-      document.getElementById('auth-input-password') as HTMLInputElement
+      document.getElementById("auth-input-password") as HTMLInputElement
     )?.select();
   };
 
@@ -138,7 +138,7 @@ export function AuthPage({ type }: IAuthPageProps) {
       flexDirection="column"
       bg="gray.50"
       _dark={{
-        bg: 'gray.800',
+        bg: "gray.800",
       }}
     >
       <Stack mt={-20} spacing="3">
@@ -154,13 +154,13 @@ export function AuthPage({ type }: IAuthPageProps) {
         <Card w="sm" rounded="xl">
           <CardBody p={7}>
             <Flex direction="column" as="form" onSubmit={handleSubmit(submit)}>
-              {type === 'register' && (
+              {type === "register" && (
                 <FormControl mt={5} isInvalid={!!errors.name?.message}>
                   <FormLabel>Nome</FormLabel>
                   <Input
                     type="text"
                     placeholder="Nome"
-                    {...register('name', {
+                    {...register("name", {
                       ...fieldRules,
                     })}
                     data-testid="auth-form-name-field"
@@ -178,7 +178,7 @@ export function AuthPage({ type }: IAuthPageProps) {
                 <Input
                   type="email"
                   placeholder="E-mail"
-                  {...register('email', { required: 'Campo obrigatório' })}
+                  {...register("email", { required: "Campo obrigatório" })}
                   data-testid="auth-form-email-field"
                 />
                 <Flex h="30px" alignItems="center">
@@ -192,9 +192,9 @@ export function AuthPage({ type }: IAuthPageProps) {
                 <FormLabel htmlFor="auth-input-password">Senha</FormLabel>
                 <InputGroup>
                   <Input
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     placeholder="Senha"
-                    {...register('password', {
+                    {...register("password", {
                       ...fieldRules,
                     })}
                     id="auth-input-password"
@@ -220,7 +220,7 @@ export function AuthPage({ type }: IAuthPageProps) {
                 bg="blue.400"
                 color="white"
                 _hover={{
-                  bg: 'blue.300',
+                  bg: "blue.300",
                 }}
                 type="submit"
                 isLoading={isLoading}

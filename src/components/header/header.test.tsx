@@ -1,7 +1,7 @@
-import { render, screen } from '@testing-library/react';
-import { HeaderApp } from '.';
+import { render, screen } from "@testing-library/react";
+import { HeaderApp } from ".";
 
-test('render HeaderApp correctly', () => {
+test("render HeaderApp correctly", () => {
   render(
     <HeaderApp
       actions={<button>action</button>}
@@ -9,7 +9,7 @@ test('render HeaderApp correctly', () => {
       user={<span>user</span>}
     />
   );
-  expect(screen.getByRole('button', { name: 'action' })).toBeInTheDocument();
-  expect(screen.getByText('logo')).toBeInTheDocument();
-  expect(screen.getByText('user')).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "action" })).toBeInTheDocument();
+  expect(screen.getByText("logo")).toBeInTheDocument();
+  expect(screen.getByText("user")).toBeInTheDocument();
 });

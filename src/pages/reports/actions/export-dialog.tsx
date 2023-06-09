@@ -7,19 +7,19 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-} from '@chakra-ui/react';
-import { OnDateSelected, RangeCalendarPanel } from 'chakra-dayzed-datepicker';
-import { useState } from 'react';
-import { endOfDay, format } from 'date-fns';
-import { AxiosError } from 'axios';
-import { subtractDays } from '../../../utils/subtract-days';
-import { useIsMobile } from '../../../hooks/use-is-mobile';
-import { useToast } from '../../../hooks/use-toast';
-import { privateApi } from '../../../services/api';
-import { EndpointsEnum } from '../../../enum/endpoints';
-import { chakraCalendarConfig } from '../../../constants/chakra-calendar-condig';
-import { ModalSize } from '../../../types/modal-size';
-import './export-dialog.css';
+} from "@chakra-ui/react";
+import { OnDateSelected, RangeCalendarPanel } from "chakra-dayzed-datepicker";
+import { useState } from "react";
+import { endOfDay, format } from "date-fns";
+import { AxiosError } from "axios";
+import { subtractDays } from "../../../utils/subtract-days";
+import { useIsMobile } from "../../../hooks/use-is-mobile";
+import { useToast } from "../../../hooks/use-toast";
+import { privateApi } from "../../../services/api";
+import { EndpointsEnum } from "../../../enum/endpoints";
+import { chakraCalendarConfig } from "../../../constants/chakra-calendar-condig";
+import { ModalSize } from "../../../types/modal-size";
+import "./export-dialog.css";
 
 interface Props {
   isOpen: boolean;
@@ -35,7 +35,7 @@ export function ExportDialog({ isOpen, onClose }: Props) {
 
   const isMobile = useIsMobile();
 
-  const modalSize: ModalSize = isMobile ? 'full' : 'md';
+  const modalSize: ModalSize = isMobile ? "full" : "md";
 
   const toast = useToast();
 
@@ -75,8 +75,8 @@ export function ExportDialog({ isOpen, onClose }: Props) {
     const [startDate, endDate] = selectedDates;
     const datesParams = {
       // TODO: create formatter utils function
-      initialDate: format(endOfDay(startDate), 'yyyy-MM-dd 00:00:00'),
-      finalDate: format(endOfDay(endDate), 'yyyy-MM-dd 23:59:59'),
+      initialDate: format(endOfDay(startDate), "yyyy-MM-dd 00:00:00"),
+      finalDate: format(endOfDay(endDate), "yyyy-MM-dd 23:59:59"),
     };
 
     // TODO: cancel timeout and isLoading false
@@ -84,10 +84,10 @@ export function ExportDialog({ isOpen, onClose }: Props) {
     privateApi
       .get(EndpointsEnum.EXPORT_SPENDING, {
         params: datesParams,
-        responseType: 'arraybuffer',
+        responseType: "arraybuffer",
         transformResponse: (response: Uint8Array, headers) => {
           if (
-            headers['content-type']?.toString().includes('application/json')
+            headers["content-type"]?.toString().includes("application/json")
           ) {
             // no rows found, show toast error
             let utf8decoder = new TextDecoder();
@@ -102,12 +102,12 @@ export function ExportDialog({ isOpen, onClose }: Props) {
         },
       })
       .then((response) => {
-        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const blob = new Blob([response.data], { type: "application/pdf" });
 
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         const blobUrl = window.URL.createObjectURL(blob);
         link.href = blobUrl;
-        link.download = 'report-spending.pdf';
+        link.download = "report-spending.pdf";
 
         document.body.appendChild(link);
 
@@ -122,7 +122,7 @@ export function ExportDialog({ isOpen, onClose }: Props) {
           toast.error({ title: error.response?.data.message });
           return;
         }
-        toast.error({ title: 'Erro desconhecido!' });
+        toast.error({ title: "Erro desconhecido!" });
       })
       .finally(() => {
         setIsLoading(false);
@@ -163,7 +163,7 @@ export function ExportDialog({ isOpen, onClose }: Props) {
             bg="orange.300"
             color="gray.800"
             _hover={{
-              bg: 'orange.400',
+              bg: "orange.400",
             }}
             isDisabled={isInvalidDatesField}
           >
