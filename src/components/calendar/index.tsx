@@ -1,7 +1,7 @@
-import { CalendarPanel } from 'chakra-dayzed-datepicker';
-import { endOfDay, format } from 'date-fns';
-import { forwardRef, useState } from 'react';
-import { chakraCalendarConfig } from '../../constants/chakra-calendar-condig';
+import { CalendarPanel } from "chakra-dayzed-datepicker";
+import { endOfDay, format } from "date-fns";
+import { forwardRef, useState } from "react";
+import { chakraCalendarConfig } from "../../constants/chakra-calendar-condig";
 
 interface Props {
   onChange?: (newDate: string | undefined) => void;

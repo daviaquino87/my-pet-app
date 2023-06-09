@@ -1,7 +1,7 @@
-import { useMediaQuery } from '@chakra-ui/react';
+import { useMediaQuery } from "@chakra-ui/react";
 
 export function useIsMobile() {
-  const [isMobile] = useMediaQuery('(max-width: 426px)');
+  const [isMobile] = useMediaQuery("(max-width: 426px)");
 
   return isMobile;
 }

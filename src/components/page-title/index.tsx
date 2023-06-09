@@ -1,6 +1,6 @@
-import { ArrowBackIcon } from '@chakra-ui/icons';
-import { HStack, Heading, IconButton } from '@chakra-ui/react';
-import { useBack } from '../../hooks/use-back';
+import { ArrowBackIcon } from "@chakra-ui/icons";
+import { HStack, Heading, IconButton } from "@chakra-ui/react";
+import { useBack } from "../../hooks/use-back";
 
 interface Props {
   title: string;

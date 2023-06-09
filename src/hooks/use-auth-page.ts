@@ -1,10 +1,10 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useToast } from './use-toast';
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useToast } from "./use-toast";
 import {
   ILoginForm,
   IRegisterForm,
-} from '../components/auth-page/auth-page.types';
-import { authPageServices } from '../services/auth';
+} from "../components/auth-page/auth-page.types";
+import { authPageServices } from "../services/auth";
 
 export function useAuthPage() {
   const toast = useToast();
@@ -12,7 +12,7 @@ export function useAuthPage() {
 
   const [searchParams] = useSearchParams();
 
-  const hasRedirectTo = searchParams.get('redirectTo') ?? '/';
+  const hasRedirectTo = searchParams.get("redirectTo") ?? "/";
 
   const onLogin = async (params: ILoginForm) => {
     const { user, token } = await authPageServices.login(params);
@@ -33,11 +33,11 @@ export function useAuthPage() {
   const onRegister = async (params: IRegisterForm) => {
     await authPageServices.register(params);
     toast.success({
-      title: 'Sucesso',
+      title: "Sucesso",
       isClosable: true,
       onCloseComplete: () => {
         navigate({
-          pathname: '/login',
+          pathname: "/login",
           search: `email=${params.email}`,
         });
       },

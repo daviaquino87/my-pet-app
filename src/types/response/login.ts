@@ -1,4 +1,4 @@
-import { ISession } from '../session';
+import { ISession } from "../session";
 
 export interface ILoginResponse extends ISession {}
 

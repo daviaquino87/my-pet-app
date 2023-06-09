@@ -1,7 +1,7 @@
-import { Input, InputProps } from '@chakra-ui/react';
-import { ChangeEvent, Ref, forwardRef } from 'react';
-import { CurrencyInput } from 'react-currency-mask';
-import { useIsMobile } from '../../hooks/use-is-mobile';
+import { Input, InputProps } from "@chakra-ui/react";
+import { ChangeEvent, Ref, forwardRef } from "react";
+import { CurrencyInput } from "react-currency-mask";
+import { useIsMobile } from "../../hooks/use-is-mobile";
 
 interface CustomCurrencyInputProps {
   onChange: (value: number | string) => void;
@@ -15,7 +15,7 @@ export const CustomCurrencyInput = forwardRef(
   ) => {
     const isMobile = useIsMobile();
 
-    const inputSize: InputProps['size'] = isMobile ? 'lg' : 'md';
+    const inputSize: InputProps["size"] = isMobile ? "lg" : "md";
 
     return (
       <CurrencyInput

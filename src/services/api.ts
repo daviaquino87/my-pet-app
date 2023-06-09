@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
@@ -9,7 +9,7 @@ export const privateApi = axios.create({
 });
 
 privateApi.interceptors.request.use((config) => {
-  const token = localStorage.getItem('@data');
+  const token = localStorage.getItem("@data");
   if (token) {
     const data = JSON.parse(token);
     config.headers.Authorization = `Baerer ${data.token}`;
@@ -23,7 +23,7 @@ privateApi.interceptors.response.use(
   },
   function (error) {
     if (error.response.status === 401) {
-      window.location.replace('/login');
+      window.location.replace("/login");
     }
     return Promise.reject(error);
   }

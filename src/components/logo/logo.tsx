@@ -1,6 +1,6 @@
-import { Image } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
-import { useIsMobile } from '../../hooks/use-is-mobile';
+import { Image } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
+import { useIsMobile } from "../../hooks/use-is-mobile";
 
 export function Logo() {
   const isMobile = useIsMobile();
@@ -14,7 +14,7 @@ export function Logo() {
         w={size}
         h={size}
         transition="all 200ms"
-        src={process.env.PUBLIC_URL + '/logo-cat.png'}
+        src={process.env.PUBLIC_URL + "/logo-cat.png"}
       />
     </Link>
   );

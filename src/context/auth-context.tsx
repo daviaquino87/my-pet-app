@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useState } from 'react';
+import { ReactNode, createContext, useContext, useState } from "react";
 
 export interface IAuthContext {
   token: string;
@@ -29,7 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within a AuthProvider');
+    throw new Error("useAuth must be used within a AuthProvider");
   }
   return context;
 }
@@ -37,7 +37,7 @@ export function useAuth() {
 export function useAuthDispatch() {
   const context = useContext(AuthDispatchContext);
   if (!context) {
-    throw new Error('useAuthDispatch must be used within a AuthProvider');
+    throw new Error("useAuthDispatch must be used within a AuthProvider");
   }
   return context;
 }

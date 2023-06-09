@@ -1,10 +1,10 @@
-import { AddIcon } from '@chakra-ui/icons';
-import { ChakraProps, IconButton, Link } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
-import { useIsMobile } from '../../hooks/use-is-mobile';
+import { AddIcon } from "@chakra-ui/icons";
+import { ChakraProps, IconButton, Link } from "@chakra-ui/react";
+import { Link as RouterLink } from "react-router-dom";
+import { useIsMobile } from "../../hooks/use-is-mobile";
 
 interface Props {
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 
 const btnSizes = {
@@ -13,7 +13,7 @@ const btnSizes = {
   lg: 20,
 };
 
-export function ButtonAddLink({ size = 'md' }: Props) {
+export function ButtonAddLink({ size = "md" }: Props) {
   const btnSize = btnSizes[size];
 
   const isMobile = useIsMobile();
@@ -21,7 +21,7 @@ export function ButtonAddLink({ size = 'md' }: Props) {
   const styles = isMobile
     ? {
         bottom: 100,
-        position: 'fixed',
+        position: "fixed",
       }
     : {};
 
@@ -37,7 +37,7 @@ export function ButtonAddLink({ size = 'md' }: Props) {
         shadow="0 0 0 0.5rem var(--chakra-colors-orange-100)"
         color="gray.800"
         _hover={{
-          bg: 'orange.400',
+          bg: "orange.400",
         }}
       />
     </Link>

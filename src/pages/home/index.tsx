@@ -1,9 +1,9 @@
-import { Box, Flex, Heading, Spinner } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
-import { ButtonAddLink } from '../../components/button-add-link';
-import { privateApi } from '../../services/api';
-import { currency } from '../../utils/currency';
-import { EndpointsEnum } from '../../enum/endpoints';
+import { Box, Flex, Heading, Spinner } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import { ButtonAddLink } from "../../components/button-add-link";
+import { privateApi } from "../../services/api";
+import { currency } from "../../utils/currency";
+import { EndpointsEnum } from "../../enum/endpoints";
 
 interface IBalanceResponse {
   balance: number;
@@ -15,7 +15,7 @@ async function fetchSpendings() {
 }
 
 function useSpendings() {
-  return useQuery<IBalanceResponse>(['spendings'], () => fetchSpendings());
+  return useQuery<IBalanceResponse>(["spendings"], () => fetchSpendings());
 }
 
 export function HomePage() {

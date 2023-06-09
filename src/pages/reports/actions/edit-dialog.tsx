@@ -9,14 +9,14 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from '@chakra-ui/react';
-import { useEffect, useRef, useState } from 'react';
-import { CustomCurrencyInput } from '../../../components/input-currency';
-import { useIsMobile } from '../../../hooks/use-is-mobile';
-import { ModalSize } from '../../../types/modal-size';
-import { ISpending } from '../../../types/spending';
+} from "@chakra-ui/react";
+import { useEffect, useRef, useState } from "react";
+import { CustomCurrencyInput } from "../../../components/input-currency";
+import { useIsMobile } from "../../../hooks/use-is-mobile";
+import { ModalSize } from "../../../types/modal-size";
+import { ISpending } from "../../../types/spending";
 
-export type SpendingBaseType = Pick<ISpending, 'id' | 'price'>;
+export type SpendingBaseType = Pick<ISpending, "id" | "price">;
 
 interface Props {
   isOpen: boolean;
@@ -41,7 +41,7 @@ export function EditDialog({
 
   const isMobile = useIsMobile();
 
-  const modalSize: ModalSize = isMobile ? 'full' : 'md';
+  const modalSize: ModalSize = isMobile ? "full" : "md";
 
   const handleEdit = () => {
     onEdit({ id, price: editPrice });
@@ -82,7 +82,7 @@ export function EditDialog({
             color="gray.800"
             bg="orange.300"
             _hover={{
-              bg: 'orange.400',
+              bg: "orange.400",
             }}
             type="submit"
             ml={3}

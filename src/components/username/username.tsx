@@ -1,6 +1,6 @@
-import { Text } from '@chakra-ui/react';
-import { useUser } from '../../context/user-context';
-import { useIsMobile } from '../../hooks/use-is-mobile';
+import { Text } from "@chakra-ui/react";
+import { useUser } from "../../context/user-context";
+import { useIsMobile } from "../../hooks/use-is-mobile";
 
 export function Username() {
   const { user } = useUser();

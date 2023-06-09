@@ -3,7 +3,7 @@ import {
   ArrowRightIcon,
   DeleteIcon,
   EditIcon,
-} from '@chakra-ui/icons';
+} from "@chakra-ui/icons";
 import {
   Button,
   Center,
@@ -20,19 +20,19 @@ import {
   Thead,
   Tr,
   useDisclosure,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { format } from 'date-fns';
-import { useState } from 'react';
-import { ConfirmDeleteDialog } from './actions/delete-dialog';
-import { PageTitle } from '../../components/page-title';
-import { EndpointsEnum } from '../../enum/endpoints';
-import { privateApi } from '../../services/api';
-import { ISpending, ISpendingResponse } from '../../types/spending';
-import { currency } from '../../utils/currency';
-import { EditDialog, SpendingBaseType } from './actions/edit-dialog';
-import { ExportDialog } from './actions/export-dialog';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { format } from "date-fns";
+import { useState } from "react";
+import { ConfirmDeleteDialog } from "./actions/delete-dialog";
+import { PageTitle } from "../../components/page-title";
+import { EndpointsEnum } from "../../enum/endpoints";
+import { privateApi } from "../../services/api";
+import { ISpending, ISpendingResponse } from "../../types/spending";
+import { currency } from "../../utils/currency";
+import { EditDialog, SpendingBaseType } from "./actions/edit-dialog";
+import { ExportDialog } from "./actions/export-dialog";
 
 async function fetchReports(page = 1): Promise<ISpendingResponse> {
   const params = { page };
@@ -46,7 +46,7 @@ async function fetchReports(page = 1): Promise<ISpendingResponse> {
   return response.data;
 }
 
-type EditSpendingType = Pick<ISpending, 'id' | 'price' | 'date'>;
+type EditSpendingType = Pick<ISpending, "id" | "price" | "date">;
 
 interface SpendingItemProps extends EditSpendingType {
   onOpenConfirmDelete: (id: string) => void;
@@ -63,7 +63,7 @@ function SpendingItem({
 }: SpendingItemProps) {
   return (
     <Tr key={id}>
-      <Td>{format(new Date(date), 'dd/MM/yyyy')}</Td>
+      <Td>{format(new Date(date), "dd/MM/yyyy")}</Td>
       <Td isNumeric>{currency(price)}</Td>
       <Td textAlign="center">
         <HStack>
@@ -72,8 +72,8 @@ function SpendingItem({
             aria-label="Remover item"
             icon={<DeleteIcon />}
             _hover={{
-              bg: 'red.100',
-              color: 'red.500',
+              bg: "red.100",
+              color: "red.500",
             }}
             onClick={() => onOpenConfirmDelete(id)}
           />
@@ -83,8 +83,8 @@ function SpendingItem({
             aria-label="Editar item"
             icon={<EditIcon />}
             _hover={{
-              bg: 'orange.100',
-              color: 'orange.500',
+              bg: "orange.100",
+              color: "orange.500",
             }}
             onClick={() => {
               onOpenEdit({ id, price, date });
@@ -119,7 +119,7 @@ export function ReportsPage() {
   const [page, setPage] = useState(1);
 
   const { data, isLoading } = useQuery(
-    ['reports', page],
+    ["reports", page],
     () => fetchReports(page),
     {
       keepPreviousData: true,
@@ -136,7 +136,7 @@ export function ReportsPage() {
       {
         onSuccess: () => {
           setSelectedSpendingId(null);
-          queryClient.invalidateQueries(['reports']);
+          queryClient.invalidateQueries(["reports"]);
         },
       }
     );
@@ -178,7 +178,7 @@ export function ReportsPage() {
   };
 
   const { isLoading: isLoadingEdit, mutate: handleEditSpending } = useMutation(
-    async ({ id, price }: Omit<SpendingBaseType, 'date'>) =>
+    async ({ id, price }: Omit<SpendingBaseType, "date">) =>
       await privateApi.put(
         `${EndpointsEnum.UPDATE_SPENDING}/${selectedSpending?.id}`,
         {
@@ -189,7 +189,7 @@ export function ReportsPage() {
       ),
     {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(['reports']);
+        await queryClient.invalidateQueries(["reports"]);
         handleOnCloseEdit();
       },
     }
